@@ -9,20 +9,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("waiting")
 public class WaitingController {
 
     WaitingService waitingService;
 
 
     @PostMapping
-    public ResponseEntity<Waiting> postKindergarten(@RequestBody Waiting waiting){
+    public ResponseEntity<Waiting> postWaiting(@RequestBody Waiting waiting){
 
         Waiting newWaiting = waitingService.createWaiting();
         return new ResponseEntity<Waiting>(waiting, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<Waiting> getKindergarten(){
+    public ResponseEntity<Waiting> getWaiting(){
 
         Waiting waiting = waitingService.findWaiting();
 
@@ -30,8 +31,8 @@ public class WaitingController {
 
     }
 
-    @GetMapping
-    public ResponseEntity<List<Waiting>> getKindergartenList(){
+    @GetMapping("/list")
+    public ResponseEntity<List<Waiting>> getWaitingList(){
 
         List<Waiting> waitingList = waitingService.findWaitingList();
 
@@ -40,7 +41,7 @@ public class WaitingController {
     }
 
     @PatchMapping
-    public ResponseEntity<Waiting> patchKindergarten(){
+    public ResponseEntity<Waiting> patchWaiting(){
         Waiting waiting = waitingService.editWaiting();
         return new ResponseEntity<Waiting>(waiting, HttpStatus.OK);
 

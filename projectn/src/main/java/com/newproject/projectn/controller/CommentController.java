@@ -12,20 +12,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("comment")
 public class CommentController {
 
     CommentService commentService;
 
 
     @PostMapping
-    public ResponseEntity<Comment> postKindergarten(@RequestBody Kindergarten kindergarten){
+    public ResponseEntity<Comment> postComment(@RequestBody Kindergarten kindergarten){
 
         Comment comment = commentService.createComment();
         return new ResponseEntity<Comment>(comment, HttpStatusCode.valueOf(200));
     }
 
     @GetMapping
-    public ResponseEntity<Comment> getKindergarten(){
+    public ResponseEntity<Comment> getComment(){
 
         Comment comment = commentService.findComment();
 
@@ -33,8 +34,8 @@ public class CommentController {
 
     }
 
-    @GetMapping
-    public ResponseEntity< List<Comment>> getKindergartenList(){
+    @GetMapping("/list")
+    public ResponseEntity< List<Comment>> getCommentList(){
 
         List<Comment> commentList = commentService.findCommentList();
 
@@ -43,7 +44,7 @@ public class CommentController {
     }
 
     @PatchMapping
-    public ResponseEntity<Comment> patchKindergarten(){
+    public ResponseEntity<Comment> patchComment(){
         Comment comment = commentService.editComment();
         return new ResponseEntity<Comment>(comment, HttpStatus.OK);
     }

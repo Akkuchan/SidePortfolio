@@ -10,19 +10,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("user")
 public class UserController {
 
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> postKindergarten(@RequestBody Kindergarten kindergarten){
+    public ResponseEntity<User> postUser(@RequestBody Kindergarten kindergarten){
 
         User user = userService.createUser();
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<User> getKindergarten(){
+    @GetMapping("/user")
+    public ResponseEntity<User> getUser(){
 
         User user = userService.findUser();
 
@@ -30,8 +31,8 @@ public class UserController {
 
     }
 
-    @GetMapping
-    public ResponseEntity<List<User>> getKindergartenList(){
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getUserList(){
 
         List<User> userList = userService.findUserList();
 
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<User> patchKindergarten(){
+    public ResponseEntity<User> patchUser(){
         User user = userService.editUser();
         return new ResponseEntity<User>(user,HttpStatus.OK);
 

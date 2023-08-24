@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@RequestMapping("kindergarten")
 public class KindergartenController {
 
     KindergartenService kindergartenService;
@@ -30,7 +31,7 @@ public class KindergartenController {
         return new ResponseEntity<Kindergarten>(HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<Kindergarten> getKindergartenList(){
 
         List<Kindergarten> kindergartenList = kindergartenService.findKindergartenList();

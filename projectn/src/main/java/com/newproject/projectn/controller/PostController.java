@@ -5,20 +5,18 @@ import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.Post;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("post")
 public class PostController {
 
     PostService postService;
 
 
     @PostMapping
-    public ResponseEntity<Post> postKindergarten(@RequestBody Kindergarten kindergarten){
+    public ResponseEntity<Post> postPost(@RequestBody Kindergarten kindergarten){
 
         Post post = postService.createPost();
 
@@ -26,7 +24,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<Post> getKindergarten(){
+    public ResponseEntity<Post> getPost(){
 
         Post post = postService.findPost();
 
@@ -34,8 +32,8 @@ public class PostController {
 
     }
 
-    @GetMapping
-    public ResponseEntity<List<Post>> getKindergartenList(){
+    @GetMapping("/list")
+    public ResponseEntity<List<Post>> getPostList(){
 
         List<Post> postList = postService.findPostList();
 
@@ -44,7 +42,7 @@ public class PostController {
     }
 
     @PatchMapping
-    public ResponseEntity<Post> patchKindergarten(){
+    public ResponseEntity<Post> patchPost(){
         Post post = postService.editPost();
         return new ResponseEntity<>(post, HttpStatus.OK);
 
