@@ -1,8 +1,6 @@
 package com.newproject.projectn.controller;
 
-import com.newproject.projectn.entitiy.Comment;
-import com.newproject.projectn.entitiy.Kindergarten;
-import com.newproject.projectn.entitiy.Post;
+import com.newproject.projectn.Service.WaitingService;
 import com.newproject.projectn.entitiy.Waiting;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class WaitingListController {
+public class WaitingController {
 
     WaitingService waitingService;
 
@@ -33,7 +31,7 @@ public class WaitingListController {
     @GetMapping
     public ResponseEntity<Waiting> getKindergartenList(){
 
-        List<Waiting> waiting = waitingService.findWaiting();
+        List<Waiting> waiting = waitingService.findWaitingList();
 
         return new ResponseEntity<Waiting>();
     }

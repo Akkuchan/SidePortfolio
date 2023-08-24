@@ -1,10 +1,7 @@
 package com.newproject.projectn.entitiy;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,6 +13,8 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long postId;
 
+    @ManyToOne
+    @JoinColumn(name = "post_user_id")
     User postUser;// 게시글 작성자
     String title;
     String body;
@@ -23,5 +22,13 @@ public class Post {
     LocalDateTime EditTime; // 게시글 수정 시간
     List<String> imgList;// 첨부 이미지
     List<String> tags;//태그 목록
+
+    public User getPostUser() {
+        return postUser;
+    }
+
+    public void setPostUser(User postUser) {
+        this.postUser = postUser;
+    }
 
 }

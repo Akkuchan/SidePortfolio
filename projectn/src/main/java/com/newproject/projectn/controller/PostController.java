@@ -1,5 +1,6 @@
 package com.newproject.projectn.controller;
 
+import com.newproject.projectn.Service.PostService;
 import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.Post;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class PostController {
     @GetMapping
     public ResponseEntity<Post> getKindergartenList(){
 
-        List<Post> Post = postService.findPost();
+        List<Post> Post = postService.findPostList();
 
         return new ResponseEntity<Post>();
     }

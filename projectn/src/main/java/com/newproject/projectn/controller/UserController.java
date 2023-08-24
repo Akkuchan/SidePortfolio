@@ -1,8 +1,7 @@
 package com.newproject.projectn.controller;
 
-import com.newproject.projectn.entitiy.Comment;
+import com.newproject.projectn.Service.UserService;
 import com.newproject.projectn.entitiy.Kindergarten;
-import com.newproject.projectn.entitiy.Post;
 import com.newproject.projectn.entitiy.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<User> getKindergartenList(){
 
-        List<User> userList = userService.findUser();
+        List<User> userList = userService.findUserList();
 
         return new ResponseEntity<User>();
     }
