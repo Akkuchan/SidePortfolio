@@ -2,6 +2,7 @@ package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.WaitingService;
 import com.newproject.projectn.entitiy.Waiting;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("waiting")
+@AllArgsConstructor
+
 public class WaitingController {
 
     WaitingService waitingService;

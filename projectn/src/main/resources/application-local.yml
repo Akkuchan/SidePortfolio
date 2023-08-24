@@ -1,19 +1,17 @@
 logging:
   level:
     org:
-      springframwork: debug
+      springframework: info
 
-server:
-  port: 8000
 
 
 
 spring:
   datasource:
-
     url: jdbc:mysql://localhost:3306/projectn
     username: root
     password: 84948494
+
 
   jpa:
     database: mysql
@@ -28,3 +26,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+  security:
+    user:
+      name: chan
+      password: 123123

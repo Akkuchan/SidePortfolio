@@ -3,6 +3,7 @@ package com.newproject.projectn.controller;
 import com.newproject.projectn.Service.PostService;
 import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.Post;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("post")
+@AllArgsConstructor
+
 public class PostController {
 
     PostService postService;

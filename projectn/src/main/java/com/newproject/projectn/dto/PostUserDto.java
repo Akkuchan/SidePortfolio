@@ -4,12 +4,13 @@ import com.newproject.projectn.entitiy.Enum.UserGrade;
 import com.newproject.projectn.entitiy.Enum.address.Address;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostUserDto {
 
 

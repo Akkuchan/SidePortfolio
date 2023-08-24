@@ -2,6 +2,7 @@ package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.KindergartenService;
 import com.newproject.projectn.entitiy.Kindergarten;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import java.util.*;
 
 @RestController
 @RequestMapping("kindergarten")
+@AllArgsConstructor
+
 public class KindergartenController {
 
     KindergartenService kindergartenService;

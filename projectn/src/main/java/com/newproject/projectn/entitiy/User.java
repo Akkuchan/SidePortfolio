@@ -2,13 +2,20 @@ package com.newproject.projectn.entitiy;
 
 import com.newproject.projectn.entitiy.Enum.UserGrade;
 import com.newproject.projectn.entitiy.Enum.address.Address;
+import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 @Entity
-public class User {
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,19 +23,21 @@ public class User {
 
     @Column
     private String username;// 로그인 아이디
+    @Email
     @Column
     private String email;//유저의 이메일
     @Column
     private String nickName;//유저 닉네임
     @Column
     private String password;//유저 비밀번호
+    @Pattern( regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "10 ~ 11 자리의 숫자만 입력 가능합니다.")
     @Column
     private String phoneNumber;
 
-    @Column
-    private LocalDate registrationDate;// 가입일
-    @Column
-    private LocalDateTime latestLogin; // 최근 로그일
+//    @Column
+//    private LocalDate registrationDate;// 가입일
+//    @Column
+//    private LocalDateTime latestLogin; // 최근 로그일
     @Column
     private String image;//프로필 이미지
 
@@ -56,13 +65,7 @@ public class User {
     @OneToMany
     private List<Comment> CommentList;
 
-    public Address getAddress() {
-        return address;
-    }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
 
 }
