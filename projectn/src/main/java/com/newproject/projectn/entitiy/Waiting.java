@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Entity
-public class WaitingList {
+public class Waiting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

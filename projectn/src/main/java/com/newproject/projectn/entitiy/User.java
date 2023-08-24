@@ -21,7 +21,7 @@ public class User {
     LocalDate registrationDate;// 가입일
     LocalDateTime latestLogin; // 최근 로그일
     String userType; // 유저타입, 학부모, 선생님, 관리자 Enum으로 변경필요
-    List<WaitingList> waitingLists;// 최대 3개까지 가능
+    List<Waiting> waitings;// 최대 3개까지 가능
 
 
 
