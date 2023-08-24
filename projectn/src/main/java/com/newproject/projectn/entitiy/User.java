@@ -15,11 +15,13 @@ public class User {
     long userId;
 
     @Column
-    private String email;
+    private String username;// 로그인 아이디
     @Column
-    private String nickName;
+    private String email;//유저의 이메일
     @Column
-    private String password;
+    private String nickName;//유저 닉네임
+    @Column
+    private String password;//유저 비밀번호
     @Column
     private String phoneNumber;
 
@@ -38,6 +40,10 @@ public class User {
     @OneToOne
     @JoinColumn(name = "address_ID")
     private Address address;
+
+    private boolean emailAvailable;// 이메일 수신여부
+    private boolean smsAvailable;// sms 수신여부
+
 
 
     private boolean isMarried;// 기혼여부

@@ -3,6 +3,7 @@ package com.newproject.projectn.controller;
 import com.newproject.projectn.Service.PostService;
 import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.Post;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,11 +18,11 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity<Post> postKindergarten(@RequestBody Kindergarten){
+    public ResponseEntity<Post> postKindergarten(@RequestBody Kindergarten kindergarten){
 
         Post post = postService.createPost();
 
-        return new ResponseEntity<kindergartenList>();
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @GetMapping
@@ -29,20 +30,23 @@ public class PostController {
 
         Post post = postService.findPost();
 
-        return new ResponseEntity<Post>();
+        return new ResponseEntity<>(post, HttpStatus.OK);
+
     }
 
     @GetMapping
-    public ResponseEntity<Post> getKindergartenList(){
+    public ResponseEntity<List<Post>> getKindergartenList(){
 
-        List<Post> Post = postService.findPostList();
+        List<Post> postList = postService.findPostList();
 
-        return new ResponseEntity<Post>();
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+
     }
 
     @PatchMapping
     public ResponseEntity<Post> patchKindergarten(){
         Post post = postService.editPost();
-        return new ResponseEntity<Post>();
+        return new ResponseEntity<>(post, HttpStatus.OK);
+
     }
 }

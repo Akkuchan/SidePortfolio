@@ -2,6 +2,7 @@ package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.WaitingService;
 import com.newproject.projectn.entitiy.Waiting;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,10 +15,10 @@ public class WaitingController {
 
 
     @PostMapping
-    public ResponseEntity<Waiting> postKindergarten(@RequestBody Waiting){
+    public ResponseEntity<Waiting> postKindergarten(@RequestBody Waiting waiting){
 
-        Waiting waiting = waitingService.createWaiting();
-        return new ResponseEntity<Waiting>();
+        Waiting newWaiting = waitingService.createWaiting();
+        return new ResponseEntity<Waiting>(waiting, HttpStatus.OK);
     }
 
     @GetMapping
@@ -25,21 +26,24 @@ public class WaitingController {
 
         Waiting waiting = waitingService.findWaiting();
 
-        return new ResponseEntity<Waiting>();
+        return new ResponseEntity<Waiting>(waiting, HttpStatus.OK);
+
     }
 
     @GetMapping
-    public ResponseEntity<Waiting> getKindergartenList(){
+    public ResponseEntity<List<Waiting>> getKindergartenList(){
 
-        List<Waiting> waiting = waitingService.findWaitingList();
+        List<Waiting> waitingList = waitingService.findWaitingList();
 
-        return new ResponseEntity<Waiting>();
+        return new ResponseEntity<List<Waiting>>(waitingList, HttpStatus.OK);
+
     }
 
     @PatchMapping
     public ResponseEntity<Waiting> patchKindergarten(){
-        Waiting comment = waitingService.editWaiting();
-        return new ResponseEntity<Waiting>();
+        Waiting waiting = waitingService.editWaiting();
+        return new ResponseEntity<Waiting>(waiting, HttpStatus.OK);
+
     }
 
 

@@ -2,6 +2,7 @@ package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.KindergartenService;
 import com.newproject.projectn.entitiy.Kindergarten;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +14,12 @@ public class KindergartenController {
     KindergartenService kindergartenService;
 
     @PostMapping
-    public ResponseEntity<Kindergarten> postKindergarten(@RequestBody Kindergarten){
+    public ResponseEntity<Kindergarten> postKindergarten(@RequestBody Kindergarten kindergarten){
 
-        List<Kindergarten> kindergartenList = kindergartenService.createKindergarten();
+        Kindergarten newKindergarten = kindergartenService.createKindergarten();
 
-        return new ResponseEntity<Kindergarten>();
+        return new ResponseEntity<Kindergarten>(HttpStatus.OK);
+
     }
 
     @GetMapping
@@ -25,7 +27,7 @@ public class KindergartenController {
 
         Kindergarten kindergarten = kindergartenService.findKindergarten();
 
-        return new ResponseEntity<Kindergarten>();
+        return new ResponseEntity<Kindergarten>(HttpStatus.OK);
     }
 
     @GetMapping
@@ -33,13 +35,15 @@ public class KindergartenController {
 
         List<Kindergarten> kindergartenList = kindergartenService.findKindergartenList();
 
-        return new ResponseEntity<Kindergarten>();
+        return new ResponseEntity<Kindergarten>(HttpStatus.OK);
+
     }
 
     @PatchMapping
     public ResponseEntity<Kindergarten> patchKindergarten(){
         Kindergarten kindergarten = kindergartenService.editKindergarten();
-        return new ResponseEntity<Kindergarten>();
+        return new ResponseEntity<Kindergarten>(HttpStatus.OK);
+
     }
 
 
