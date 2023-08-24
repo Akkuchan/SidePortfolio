@@ -33,7 +33,7 @@ public class CommentController {
     @GetMapping
     public ResponseEntity<Comment> getKindergartenList(){
 
-        List<Post> Post = commentService.findComment();
+        List<Post> Post = commentService.findCommentList();
 
         return new ResponseEntity<Comment>();
     }

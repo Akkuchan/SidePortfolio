@@ -1,5 +1,7 @@
 package com.newproject.projectn.entitiy;
 
+import com.newproject.projectn.entitiy.Enum.UserGrade;
+import com.newproject.projectn.entitiy.Enum.address.Address;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -13,27 +15,48 @@ public class User {
     long userId;
 
     @Column
-    String email;
+    private String email;
     @Column
-    String nickName;
+    private String nickName;
     @Column
-    String phoneNumber;
+    private String password;
     @Column
-    LocalDate registrationDate;// 가입일
+    private String phoneNumber;
+
     @Column
-    LocalDateTime latestLogin; // 최근 로그일
+    private LocalDate registrationDate;// 가입일
+    @Column
+    private LocalDateTime latestLogin; // 최근 로그일
+    @Column
+    private String image;//프로필 이미지
+
     @Enumerated(value = EnumType.STRING)
     @Column
-    String userType; // 유저타입, 학부모, 선생님, 관리자 Enum으로 변경필요
-    @Column
-    private String image="";
+    private UserGrade userType; // 유저타입, 학부모, 선생님, 관리자 Enum으로 변경필요
+
+
+    @OneToOne
+    @JoinColumn(name = "address_ID")
+    private Address address;
+
+
+    private boolean isMarried;// 기혼여부
+    private boolean isPregnant;// 임신여부
+    private boolean hasChild;// 자녀여부
 
     @OneToMany
-    List<Waiting> waitingList;// 최대 3개까지 가능
+    private List<Waiting> waitingList;// 최대 3개까지 가능
 
     @OneToMany
-    List<Comment> CommentList;
+    private List<Comment> CommentList;
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
 
 }

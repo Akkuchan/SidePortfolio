@@ -10,20 +10,29 @@ public class Waiting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long waitingListId;
+    private long waitingListId;
+
 
     @OneToOne
-    Kindergarten kindergarten;
+    private Kindergarten kindergarten;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user;
-    LocalDate expectingEnrollDate;// 입학 희망일
-    List<String> document1;
-    List<String> document2;
-    int enrollRankingGrade; // 입소 순위 배점
+    private User user;
+    private LocalDate expectingEnrollDate;// 입학 희망일
+    private List<String> document1;
+    private List<String> document2;
+    private int enrollRankingGrade; // 입소 순위 배점
 
     public User getUser() {
         return user;
+    }
+
+    public Kindergarten getKindergarten() {
+        return kindergarten;
+    }
+
+    public int getEnrollRankingGrade() {
+        return enrollRankingGrade;
     }
 
     public void setUser(User user) {

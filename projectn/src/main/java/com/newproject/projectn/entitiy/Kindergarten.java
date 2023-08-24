@@ -1,10 +1,8 @@
 package com.newproject.projectn.entitiy;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.newproject.projectn.entitiy.Enum.address.Address;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,13 +13,14 @@ public class Kindergarten {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long kindergartenId;
+    private long kindergartenId;
 
     String name;
-    String state;// 시도
-    String city; //시군구
+
     String type;// 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
-    String zipCode;// 우편번호
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    Address address;// 주소 + 우편번호
     long latitude;//위도
     long longtitude;//경도
 
@@ -43,8 +42,13 @@ public class Kindergarten {
     int capacity;// 수용인원
     int quota;//현원
 
+    public Address getAddress() {
+        return address;
+    }
 
-
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
 
 }

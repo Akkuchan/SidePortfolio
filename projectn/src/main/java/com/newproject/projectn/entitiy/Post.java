@@ -2,11 +2,13 @@ package com.newproject.projectn.entitiy;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
+@Getter
 public class Post {
 
     @Id
