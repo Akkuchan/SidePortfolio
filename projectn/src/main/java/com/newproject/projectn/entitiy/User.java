@@ -50,14 +50,11 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "address_ID")
     private Address address;
 
-    private boolean emailAvailable;// 이메일 수신여부
-    private boolean smsAvailable;// sms 수신여부
-
-
-
-    private boolean isMarried;// 기혼여부
-    private boolean isPregnant;// 임신여부
-    private boolean hasChild;// 자녀여부
+    private Boolean emailAvailable;// 이메일 수신여부
+    private Boolean smsAvailable;// sms 수신여부
+    private Boolean isMarried;// 기혼여부
+    private Boolean isPregnant;// 임신여부
+    private Boolean hasChild;// 자녀여부
 
     @OneToMany
     private List<Waiting> waitingList;// 최대 3개까지 가능

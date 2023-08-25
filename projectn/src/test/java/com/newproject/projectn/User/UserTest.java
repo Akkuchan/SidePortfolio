@@ -2,10 +2,8 @@ package com.newproject.projectn.User;
 
 
 import com.newproject.projectn.Service.UserService;
-import com.newproject.projectn.controller.UserController;
 import com.newproject.projectn.entitiy.Enum.UserGrade;
 import com.newproject.projectn.entitiy.User;
-import com.newproject.projectn.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,11 +31,11 @@ public class UserTest {
                 .password("testPassword")
                 .phoneNumber("010-1234-5678")
                 .userType(UserGrade.NORMAL_USER)
-                .emailAvailable(true)
-                .smsAvailable(true)
+                .isEmailAvailable(true)
+                .isSmsAvailable(true)
                 .isMarried(true)
                 .isPregnant(false)
-                .hasChild(false)
+                .isParent(false)
                 .build();
 
         User createdUser = userService.createUser(testUser);

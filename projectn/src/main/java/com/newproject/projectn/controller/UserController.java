@@ -29,6 +29,7 @@ public class UserController {
 
 
         User user = userService.createUser(postingUser);
+
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 
