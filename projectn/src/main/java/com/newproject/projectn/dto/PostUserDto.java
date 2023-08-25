@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import java.util.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,6 +32,8 @@ public class PostUserDto {
     public Boolean isMarried;// 기혼여부
     public Boolean isPregnant;// 임신여부
     public Boolean hasChild;// 자녀여부
+
+    public List<Boolean> duplicationCheck;
 
 
 

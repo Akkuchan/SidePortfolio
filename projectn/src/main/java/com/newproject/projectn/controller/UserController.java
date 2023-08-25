@@ -2,6 +2,9 @@ package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.UserService;
 import com.newproject.projectn.dto.PostUserDto;
+import com.newproject.projectn.dto.duplicationCheckDtos.EmailCheckDto;
+import com.newproject.projectn.dto.duplicationCheckDtos.NickNameCheckDto;
+import com.newproject.projectn.dto.duplicationCheckDtos.UsernameCheckDto;
 import com.newproject.projectn.dto.testDto;
 import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.User;
@@ -28,13 +31,35 @@ public class UserController {
         postingUser.setImage("https://img.freepik.com/premium-photo/portrait-of-a-handsome-young-man_53876-38137.jpg");//이미지 로직 생성전 임시파일
 
 
-        User user = userService.createUser(postingUser);
+        User user = userService.createUser(postingUser, postDto.getDuplicationCheck());
 
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 
-
-
+    @PostMapping("/email/check")
+    public ResponseEntity<String> checkEmail(@RequestBody EmailCheckDto emailCheckDto){
+        if(userService.checkEmailDuplication(emailCheckDto.getEmail())){
+            return new ResponseEntity<>("중복된 이메일입니다.", HttpStatus.BAD_REQUEST);
+        }else{
+            return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/email/check")
+    public ResponseEntity<String> checkUsername(@RequestBody UsernameCheckDto usernameCheckDto){
+        if(userService.checkUsernameDuplication(usernameCheckDto.getUsername())){
+            return new ResponseEntity<>("중복된 유저명입니다.", HttpStatus.BAD_REQUEST);
+        }else{
+            return new ResponseEntity<>("사용 가능한 유저명입니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/email/check")
+    public ResponseEntity<String> checkNickName(@RequestBody NickNameCheckDto nickNameCheckDto){
+        if( userService.checkNicknameDuplication(nickNameCheckDto.getNickName())){
+            return new ResponseEntity<>("중복된 닉네임입니다.", HttpStatus.BAD_REQUEST);
+        }else{
+            return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUser(@PathVariable long userId){

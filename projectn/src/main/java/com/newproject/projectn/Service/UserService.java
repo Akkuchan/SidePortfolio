@@ -24,12 +24,26 @@ public class UserService {
     AddressRepository addressRepository;
     UserRepository userRepository;
     @Transactional
-    public User createUser(User user) {
-        //username, email, 닉네임 등 중복검사 체크 + 중복시 에러 추가하기(Bisness 에러 추가)
-
+    public User createUser(User user, List<Boolean> duplicationCheck) {
+        for(Boolean check: duplicationCheck){
+            if (check) {System.out.println("중복검사PASS");}
+            else {throw new BusinessLogicException(ExceptionCode.DUPLICATION_CHECK_IS_WRONG);}
+        }
         addressRepository.save(user.getAddress());
         return userRepository.save(user);
     }
+
+
+    public boolean checkEmailDuplication(String email){
+       return userRepository.existsByEmail(email);
+    }
+    public boolean checkUsernameDuplication(String email){
+        return userRepository.existsByUsername(email);
+    }
+    public boolean checkNicknameDuplication(String email){
+        return userRepository.existsByNickname(email);
+    }
+
 
     public User findUser(long userId) {
         return getUser(userId);
@@ -49,43 +63,34 @@ public class UserService {
             String capitalizedFieldName = methodNameStartWithCapital(eachField);
 
             if(eachField.getType().equals(String.class)){
-                HashMap<String, Object> result = getFieldValue(capitalizedFieldName, foundUser, editUserInfo );
+                HashMap<String, Object> fieldValue = getFieldValue(capitalizedFieldName, foundUser, editUserInfo );
                 Object value = eachField.get(editUserInfo);// 수정본에서 value가져오기
-
-                if(!result.get(methodNameStartWithCapital(eachField)).equals(value)){
-                    String setMethodName = "set" + methodNameStartWithCapital(eachField);// set메서드 설정위해 이름 가져오기
-                    Method setFiled = foundUser.getClass().getDeclaredMethod(setMethodName, eachField.getType());
-                    setFiled.invoke(foundUser,value);
-                }
+                checkIsValueChanged(foundUser, eachField, fieldValue, value);
                 System.out.println("Field name: " + eachField.getName() + ", Value: " + value);
             }
 
             if(eachField.getType().equals(Boolean.class)){
                 HashMap<String, Object> fieldValue = getFieldValue(capitalizedFieldName, foundUser, editUserInfo );
                 Object value = eachField.get(editUserInfo);// 수정본에서 value가져오기
-
-                if(!fieldValue.equals(value)){
-                    String setMethodName = "set" + methodNameStartWithCapital(eachField);// set메서드 설정위해 이름 가져오기
-                    Method setFiled = foundUser.getClass().getDeclaredMethod(setMethodName, eachField.getType());
-                    setFiled.invoke(foundUser,value);
-                }
+                checkIsValueChanged(foundUser, eachField, fieldValue, value);
                 System.out.println("Field name: " + eachField.getName() + ", Value: " + value);
-
             }
-
         }
+
         return userRepository.save(foundUser);
     }
-
     public List<User> findUserList(int pageIdx) {
         List<User> test = userRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("username").descending()))
                 .stream().toList();
         return test;
     }
-
     private User getUser(long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
+
+
+
+
 
 
     public String methodNameStartWithCapital(Field field){
@@ -101,5 +106,12 @@ public class UserService {
         return result;
     }
 
+    private void checkIsValueChanged(User foundUser, Field eachField, HashMap<String, Object> fieldValue, Object value) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        if(!fieldValue.equals(value)){
+            String setMethodName = "set" + methodNameStartWithCapital(eachField);// set메서드 설정위해 이름 가져오기
+            Method setFiled = foundUser.getClass().getDeclaredMethod(setMethodName, eachField.getType());
+            setFiled.invoke(foundUser, value);
+        }
+    }
 
 }

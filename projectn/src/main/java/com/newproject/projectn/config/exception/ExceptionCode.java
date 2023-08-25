@@ -17,6 +17,7 @@ public enum ExceptionCode {
     CANNOT_FOLLOW_MYSELF(BAD_REQUEST, "자기 자신은 팔로우 할 수 없습니다"),
     FORBIDDEN_WORD_USED(BAD_REQUEST, "금지된 단어가 사용되었습니다 다시 입력해주세요"),
     ALREADY_FOLLOWED(BAD_REQUEST, "이미 팔로우되어 있습니다."),
+    DUPLICATION_CHECK_IS_WRONG(BAD_REQUEST, "중복검사 내역이 올바르지 않습니다. 유저명, 이메일 닉네임의 중복을 확인해주세요"),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
