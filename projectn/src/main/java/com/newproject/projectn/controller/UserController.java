@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,9 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> postUser(@RequestBody PostUserDto postDto){
         User postingUser = mapper.postUserDtoToUserEntity(postDto);
+        postingUser.setImage("https://img.freepik.com/premium-photo/portrait-of-a-handsome-young-man_53876-38137.jpg");//이미지 로직 생성전 임시파일
+
+
         User user = userService.createUser(postingUser);
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
@@ -31,27 +35,31 @@ public class UserController {
 
 
 
-    @GetMapping()
-    public ResponseEntity<User> getUser(){
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUser(@PathVariable long userId){
 
-        User user = userService.findUser();
+        User user = userService.findUser(userId);
 
         return new ResponseEntity<User>(user,HttpStatus.OK);
 
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<User>> getUserList(){
+    @GetMapping("/list/{page}")
+    public ResponseEntity<List<User>> getUserList(@PathVariable int page){
 
-        List<User> userList = userService.findUserList();
+        List<User> userList = userService.findUserList(page-1);
 
         return new ResponseEntity<>(userList,HttpStatus.OK);
 
     }
 
-    @PatchMapping
-    public ResponseEntity<User> patchUser(){
-        User user = userService.editUser();
+    @PatchMapping("/{userId}")
+    public ResponseEntity<User> patchUser(@PathVariable long userId, @RequestBody PostUserDto test) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+
+        User testUser = mapper.postUserDtoToUserEntity(test);
+        testUser.setUserId(1);//테스트용 임시(patch메서드 생성 필요)
+        testUser.setImage("https://img.freepik.com/premium-photo/portrait-of-a-handsome-young-man_53876-38137.jpg");//이미지 로직 생성전 임시파일
+        User user = userService.editUser(userId, testUser);
         return new ResponseEntity<User>(user,HttpStatus.OK);
 
     }

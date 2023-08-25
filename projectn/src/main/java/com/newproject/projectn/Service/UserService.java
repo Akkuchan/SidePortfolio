@@ -1,17 +1,22 @@
 package com.newproject.projectn.Service;
 
+import com.newproject.projectn.config.exception.BusinessLogicException;
+import com.newproject.projectn.config.exception.ExceptionCode;
 import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.repository.AddressRepository;
 import com.newproject.projectn.repository.UserRepository;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,17 +31,53 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findUser() {
-        return new User();
+    public User findUser(long userId) {
+        return getUser(userId);
+    }
+
+
+    public User editUser(long userId, User editUserInfo) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        User foundUser = getUser(userId);
+
+        Class<? extends User> testUser = editUserInfo.getClass();
+        Field[] fields = testUser.getDeclaredFields();
+
+        for(Field eachField: fields){
+            eachField.setAccessible(true);
+            if(eachField.getType().equals(String.class)){
+
+                String upperFiledName = eachField.getName().substring(0,1).toUpperCase()+eachField.getName().substring(1);;//username -> Username
+                Method getFiled = foundUser.getClass().getDeclaredMethod("get" + upperFiledName);//get 메서드 생성
+                Object fieldValue = getFiled.invoke(foundUser);//비교할 원본 객체에서 각 필드의 value 가져오기
+
+                Object value = eachField.get(editUserInfo);// 수정본에서 value가져오기
+
+                if(!fieldValue.equals(value)){
+                    String setMethodName = "set" + upperFiledName;// set메서드 설정위해 이름 가져오기
+                    Method setFiled = foundUser.getClass().getDeclaredMethod(setMethodName, eachField.getType());
+                    setFiled.invoke(foundUser,value);
+                }
+                System.out.println("Field name: " + eachField.getName() + ", Value: " + value);
+            }
+        }
+        return userRepository.save(foundUser);
+    }
+
+    public List<User> findUserList(int pageIdx) {
+        List<User> test = userRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("username").descending()))
+                .stream().toList();
+
+        return test;
 
     }
 
-    public User editUser() {
-        return new User();
 
+
+    private User getUser(long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
-    public List<User> findUserList() {
-        return new ArrayList<>();
-    }
+
+
+
 }

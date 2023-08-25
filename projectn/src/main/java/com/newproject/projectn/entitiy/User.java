@@ -19,7 +19,7 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long userId;
+    private long userId;
 
     @Column
     private String username;// 로그인 아이디
