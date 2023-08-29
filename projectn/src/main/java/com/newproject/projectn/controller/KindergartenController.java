@@ -60,6 +60,12 @@ public class KindergartenController {
 
     }
 
+    @DeleteMapping("/{kindergartenId}")
+    public ResponseEntity<Kindergarten> deleteKindergarten(@PathVariable Long kindergartenId){
 
+        kindergartenService.removeKindergarten(kindergartenId);
+
+        return new ResponseEntity<Kindergarten>(HttpStatus.OK);
+    }
 
 }

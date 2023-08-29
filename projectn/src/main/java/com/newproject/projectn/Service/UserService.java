@@ -76,9 +76,8 @@ public class UserService {
         return userRepository.save(foundUser);
     }
     public List<User> findUserList(int pageIdx) {
-        List<User> test = userRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("username").descending()))
+        return userRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("username").descending()))
                 .stream().toList();
-        return test;
     }
     private User getUser(long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
@@ -110,4 +109,7 @@ public class UserService {
         }
     }
 
+    public void removeUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
 }

@@ -1,6 +1,7 @@
 package com.newproject.projectn.entitiy;
 
 
+import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -9,7 +10,7 @@ import java.util.*;
 
 @Entity
 @Getter
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +21,7 @@ public class Post {
     User postUser;// 게시글 작성자
     String title;
     String body;
-    LocalDateTime postTime; // 게시글 작성 시간
-    LocalDateTime EditTime; // 게시글 수정 시간
+
     List<String> imgList;// 첨부 이미지
     List<String> tags;//태그 목록
 

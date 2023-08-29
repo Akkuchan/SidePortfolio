@@ -41,6 +41,7 @@ public enum ExceptionCode {
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),
+    CONFLICT_USER_DATA(CONFLICT, "유저 정보가 일치하지 않습니다."),
     DUPLICATE_NAME(CONFLICT, "해당 이름은 이미 존재합니다."),
     DUPLICATE_DISPLAY_NAME(CONFLICT, "해당 닉네임은 이미 존재합니다."),
     DUPLICATE_EMAIL(CONFLICT, "해당 이메일은 이미 존재합니다."),

@@ -91,4 +91,12 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Kindergarten> deleteUser(@PathVariable Long userId){
+
+        userService.removeUser(userId);
+
+        return new ResponseEntity<Kindergarten>(HttpStatus.OK);
+    }
+
 }

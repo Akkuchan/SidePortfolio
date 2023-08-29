@@ -115,6 +115,11 @@ public class KindergartenService {
             setFiled.invoke(foundObject, value);
         }
     }
+
+    public void removeKindergarten(Long kindergartenId) {
+
+        kindergartenRepository.deleteById(kindergartenId);
+    }
 }
 
 
