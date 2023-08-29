@@ -16,14 +16,17 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long postId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "post_user_id")
     User postUser;// 게시글 작성자
     String title;
     String body;
 
+
     List<String> imgList;// 첨부 이미지
     List<String> tags;//태그 목록
+
+
 
     public User getPostUser() {
         return postUser;

@@ -40,12 +40,14 @@ public class KindergartenService {
 
 
     public Kindergarten findKindergarten(Long id) {
-        return kindergartenRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_SUCH_ELEMENT));
+        return findKindergartenById(id);
     }
+
+
 
     public List<Kindergarten> findKindergartenList(int pageIdx) {
 
-        return kindergartenRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("name").descending()))
+        return kindergartenRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("updateTime").descending()))
                 .stream().toList();
     }
 
@@ -120,6 +122,10 @@ public class KindergartenService {
 
         kindergartenRepository.deleteById(kindergartenId);
     }
+    public Kindergarten findKindergartenById(Long id) {
+        return kindergartenRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_SUCH_ELEMENT));
+    }
+
 }
 
 

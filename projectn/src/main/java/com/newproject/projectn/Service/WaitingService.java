@@ -1,19 +1,31 @@
 package com.newproject.projectn.Service;
 
+import com.newproject.projectn.config.exception.BusinessLogicException;
+import com.newproject.projectn.config.exception.ExceptionCode;
+import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.Waiting;
+import com.newproject.projectn.repository.WaitingRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class WaitingService {
-    public Waiting createWaiting() {
-        return new Waiting();
+
+    WaitingRepository waitingRepository;
+    public Waiting createWaiting(Waiting newWaiting) {
+
+        return waitingRepository.save(newWaiting);
+
     }
 
-    public Waiting findWaiting() {
-        return new Waiting();
+    public Waiting findWaiting(Long waitingId) {
+        return waitingRepository.findById(waitingId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_SUCH_ELEMENT));
 
     }
 
@@ -22,8 +34,9 @@ public class WaitingService {
 
     }
 
-    public List<Waiting> findWaitingList() {
-        return new ArrayList<>();
+    public List<Waiting> findWaitingList(int pageIdx) {
+        return waitingRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("updateTime").descending())).stream().toList();
+
 
     }
 }

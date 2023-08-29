@@ -31,7 +31,7 @@ public class PostService {
     }
 
     public List<Post> findPostList(int pageIdx) {
-        return postRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("EditTime").descending()))
+        return postRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("updateTime").descending()))
         .stream().toList();
 
     }

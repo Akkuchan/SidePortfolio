@@ -1,4 +1,4 @@
-package com.newproject.projectn.dto;
+package com.newproject.projectn.dto.user;
 
 import com.newproject.projectn.entitiy.Enum.UserGrade;
 import com.newproject.projectn.entitiy.Enum.address.Address;

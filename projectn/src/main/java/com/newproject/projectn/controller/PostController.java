@@ -2,9 +2,8 @@ package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.PostService;
 import com.newproject.projectn.Service.UserService;
-import com.newproject.projectn.dto.PatchPostDto;
-import com.newproject.projectn.dto.PostPostDto;
-import com.newproject.projectn.entitiy.Kindergarten;
+import com.newproject.projectn.dto.post.PatchPostDto;
+import com.newproject.projectn.dto.post.PostPostDto;
 import com.newproject.projectn.entitiy.Post;
 import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.mapper.PostMapper;

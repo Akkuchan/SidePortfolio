@@ -1,4 +1,4 @@
-package com.newproject.projectn.dto;
+package com.newproject.projectn.dto.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
