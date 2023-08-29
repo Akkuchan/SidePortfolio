@@ -1,10 +1,7 @@
 package com.newproject.projectn.entitiy.Enum.address;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -25,4 +22,9 @@ public class Address {
     @Column(length = 5)
     private String zipcode;
 
+    public Address(State state, String city, String zipcode) {
+        this.state = state;
+        this.city = city;
+        this.zipcode = zipcode;
+    }
 }

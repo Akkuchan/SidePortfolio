@@ -41,16 +41,12 @@ public class UserService {
         return userRepository.existsByUsername(email);
     }
     public boolean checkNicknameDuplication(String email){
-        return userRepository.existsByNickname(email);
+        return userRepository.existsByNickName(email);
     }
-
 
     public User findUser(long userId) {
         return getUser(userId);
     }
-
-
-
 
     public User editUser(long userId, User editUserInfo) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         User foundUser = getUser(userId);
@@ -63,14 +59,14 @@ public class UserService {
             String capitalizedFieldName = methodNameStartWithCapital(eachField);
 
             if(eachField.getType().equals(String.class)){
-                HashMap<String, Object> fieldValue = getFieldValue(capitalizedFieldName, foundUser, editUserInfo );
+                HashMap<String, Object> fieldValue = getFieldValue(capitalizedFieldName, foundUser );
                 Object value = eachField.get(editUserInfo);// 수정본에서 value가져오기
                 checkIsValueChanged(foundUser, eachField, fieldValue, value);
                 System.out.println("Field name: " + eachField.getName() + ", Value: " + value);
             }
 
             if(eachField.getType().equals(Boolean.class)){
-                HashMap<String, Object> fieldValue = getFieldValue(capitalizedFieldName, foundUser, editUserInfo );
+                HashMap<String, Object> fieldValue = getFieldValue(capitalizedFieldName, foundUser );
                 Object value = eachField.get(editUserInfo);// 수정본에서 value가져오기
                 checkIsValueChanged(foundUser, eachField, fieldValue, value);
                 System.out.println("Field name: " + eachField.getName() + ", Value: " + value);
@@ -97,7 +93,7 @@ public class UserService {
         return field.getName().substring(0,1).toUpperCase()+field.getName().substring(1);//username -> Username
     }
 
-    public HashMap<String,Object> getFieldValue(String upperFiledName, User dbUser, User editUserInfo) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public HashMap<String,Object> getFieldValue(String upperFiledName, User dbUser) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         HashMap<String,Object> result = new HashMap<String,Object>();
 
         Method getFiled = dbUser.getClass().getDeclaredMethod("get" + upperFiledName);//get 메서드 생성

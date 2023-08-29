@@ -25,6 +25,7 @@ public class UserController {
 
     UserService userService;
     UserMapper mapper;
+
     @PostMapping
     public ResponseEntity<User> postUser(@RequestBody PostUserDto postDto){
         User postingUser = mapper.postUserDtoToUserEntity(postDto);
@@ -41,23 +42,23 @@ public class UserController {
         if(userService.checkEmailDuplication(emailCheckDto.getEmail())){
             return new ResponseEntity<>("중복된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }else{
-            return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("사용 가능한 이메일입니다.", HttpStatus.OK);
         }
     }
-    @PostMapping("/email/check")
+    @PostMapping("/username/check")
     public ResponseEntity<String> checkUsername(@RequestBody UsernameCheckDto usernameCheckDto){
         if(userService.checkUsernameDuplication(usernameCheckDto.getUsername())){
             return new ResponseEntity<>("중복된 유저명입니다.", HttpStatus.BAD_REQUEST);
         }else{
-            return new ResponseEntity<>("사용 가능한 유저명입니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("사용 가능한 유저명입니다.", HttpStatus.OK);
         }
     }
-    @PostMapping("/email/check")
+    @PostMapping("/nickname/check")
     public ResponseEntity<String> checkNickName(@RequestBody NickNameCheckDto nickNameCheckDto){
         if( userService.checkNicknameDuplication(nickNameCheckDto.getNickName())){
             return new ResponseEntity<>("중복된 닉네임입니다.", HttpStatus.BAD_REQUEST);
         }else{
-            return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("사용 가능한 닉네임입니다.", HttpStatus.OK);
         }
     }
 
