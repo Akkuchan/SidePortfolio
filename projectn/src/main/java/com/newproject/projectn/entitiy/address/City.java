@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -24,4 +27,8 @@ public class City {
     @ManyToOne(fetch =FetchType.LAZY)
     @JoinColumn(name = "state_Id")
     State state;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    List<Address> cities= new ArrayList<>();
 }

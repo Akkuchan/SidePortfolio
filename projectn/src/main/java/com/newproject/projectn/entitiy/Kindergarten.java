@@ -1,7 +1,9 @@
 package com.newproject.projectn.entitiy;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.newproject.projectn.entitiy.address.Address;
+import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,18 +16,19 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Kindergarten {
+public class Kindergarten extends BaseTimeEntity {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long kindergartenId;
+    long kindergartenId;
 
     String name;
 
     Enum Type;// 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
     @OneToOne
     @JoinColumn(name = "address_id")
+    @JsonIgnore
     Address address;// 주소 + 우편번호
 
     Double latitude;//위도

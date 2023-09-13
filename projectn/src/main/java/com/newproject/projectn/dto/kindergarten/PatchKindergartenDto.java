@@ -4,18 +4,22 @@ import com.newproject.projectn.entitiy.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @AllArgsConstructor
 public class PatchKindergartenDto {
     Long kindergartenId;
     String name;
     String type;// 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
-    Address address;// 주소 + 우편번호
+     Long cityId;// 주소 + 우편번호
+     String details;
+    String zipcode;
     Boolean available;// 정상 운영여부
     String number;// 전화번호
     LocalTime startTime;

@@ -18,17 +18,14 @@ public class State {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stateId;
+    Long stateId;
 
     @Column
     String stateName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "state", cascade = CascadeType.ALL, fetch =FetchType.LAZY)
+    @OneToMany(mappedBy = "state", cascade = CascadeType.ALL)
     List<City> cities= new ArrayList<>();
 
-    public State(Long stateId, String stateName) {
-        this.stateId = stateId;
-        this.stateName = stateName;
-    }
+
 }

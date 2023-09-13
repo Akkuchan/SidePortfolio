@@ -4,11 +4,17 @@ import com.newproject.projectn.config.exception.BusinessLogicException;
 import com.newproject.projectn.config.exception.ExceptionCode;
 import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.User;
+import com.newproject.projectn.entitiy.address.Address;
+import com.newproject.projectn.entitiy.address.City;
+import com.newproject.projectn.entitiy.address.State;
 import com.newproject.projectn.repository.AddressRepository;
+import com.newproject.projectn.repository.CityRepository;
 import com.newproject.projectn.repository.KindergartenRepository;
+import com.newproject.projectn.repository.StateRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +22,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,12 +34,18 @@ public class KindergartenService {
 
     KindergartenRepository kindergartenRepository;
     AddressRepository addressRepository;
+    StateRepository stateRepository;
+    CityRepository cityRepository;
     @Transactional
-    public Kindergarten createKindergarten(Kindergarten kindergarten) {
+    public Kindergarten createKindergarten(Kindergarten kindergarten, long cityId, String details, String zipCode) {
 
         checkKindergartenExistByName(kindergarten.getName());
 
-        addressRepository.save(kindergarten.getAddress());
+        City city = cityRepository.findById(cityId).orElseThrow();
+
+        Address address = addressRepository.save(new Address(city, details, zipCode));
+
+        kindergarten.setAddress(address);
         return kindergartenRepository.save(kindergarten);
 
 
@@ -50,6 +64,29 @@ public class KindergartenService {
         return kindergartenRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("updateTime").descending()))
                 .stream().toList();
     }
+
+    public List<Kindergarten> findKindergartenListByStateAndCity(String state, String city, @Nullable String kindergartenName, int pageIdx) {/// 리팩토링 필요 for문으로 db와 통신 너무 많이 함
+        State foundState = stateRepository.findByStateName(state).orElseThrow();
+        City city1 = cityRepository.findByStateAndCityName(foundState, city).orElseThrow();
+        List<Address> addresses = addressRepository.findByCity(city1);
+
+        List<Kindergarten> kindergartenList = new ArrayList<>();
+
+
+        for(Address ad : addresses){
+            kindergartenList.add(kindergartenRepository.findAllByAddress(ad).orElseThrow());
+        }
+
+        if(kindergartenName!=null){
+            return kindergartenList.stream().filter((kindergarten) -> kindergarten.getName().equals(kindergartenName)).collect(Collectors.toList());
+        }
+
+        return kindergartenList;
+
+    }
+
+
+
 
     public Kindergarten editKindergarten(Kindergarten editingKindergarten) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         Kindergarten foundKindergarten = kindergartenRepository.findById(editingKindergarten.getKindergartenId()).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_SUCH_ELEMENT));

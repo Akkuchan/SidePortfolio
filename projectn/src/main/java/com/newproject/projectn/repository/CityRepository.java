@@ -6,12 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CityRepository extends JpaRepository<City, Long > {
 
 
-    List<City> findByCityName(String region);
+    Optional<City> findByCityName(String region);
+
 
     List<City> findByState(State state);
+
+    Optional<City> findByStateAndCityName( State state, String city);
 }

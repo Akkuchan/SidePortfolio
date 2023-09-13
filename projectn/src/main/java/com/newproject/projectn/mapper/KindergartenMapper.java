@@ -9,5 +9,5 @@ import org.mapstruct.Mapper;
 public interface KindergartenMapper {
 
     Kindergarten postKindergartenDtoToKindergartenEntity(PostKindergartenDto postKindergartenDto);
-    Kindergarten patchKindergartenDtoToKindergartenEntity(PatchKindergartenDto postKindergartenDto);
+    Kindergarten patchKindergartenDtoToKindergartenEntity(PatchKindergartenDto patchKindergartenDto);
 }
