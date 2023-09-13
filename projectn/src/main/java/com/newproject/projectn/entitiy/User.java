@@ -1,7 +1,7 @@
 package com.newproject.projectn.entitiy;
 
 import com.newproject.projectn.entitiy.Enum.UserGrade;
-import com.newproject.projectn.entitiy.Enum.address.Address;
+import com.newproject.projectn.entitiy.address.Address;
 import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

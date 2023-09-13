@@ -1,6 +1,6 @@
 package com.newproject.projectn.dto.kindergarten;
 
-import com.newproject.projectn.entitiy.Enum.address.Address;
+import com.newproject.projectn.entitiy.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

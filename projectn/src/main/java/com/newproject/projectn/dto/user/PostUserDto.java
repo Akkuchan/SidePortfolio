@@ -1,10 +1,8 @@
 package com.newproject.projectn.dto.user;
 
 import com.newproject.projectn.entitiy.Enum.UserGrade;
-import com.newproject.projectn.entitiy.Enum.address.Address;
-import jakarta.persistence.Column;
+import com.newproject.projectn.entitiy.address.Address;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.*;

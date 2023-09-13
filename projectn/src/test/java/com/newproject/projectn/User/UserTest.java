@@ -3,7 +3,9 @@ package com.newproject.projectn.User;
 
 import com.newproject.projectn.Service.UserService;
 import com.newproject.projectn.entitiy.Enum.UserGrade;
-import com.newproject.projectn.entitiy.Enum.address.Address;
+import com.newproject.projectn.entitiy.address.Address;
+import com.newproject.projectn.entitiy.address.City;
+import com.newproject.projectn.entitiy.address.State;
 import com.newproject.projectn.entitiy.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.newproject.projectn.entitiy.Enum.address.State.INCHEON;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -39,7 +41,7 @@ public class UserTest {
                 .isMarried(true)
                 .isPregnant(false)
                 .hasChild(false)
-                .address(new Address(INCHEON,"중구","32231"))
+//                .address(new Address(new City(1L, "중구",new State(1L,"서울특별시")),"서울로 111 101-1001호","43423"))
                 .build();
         List<Boolean> test = new ArrayList<Boolean>();
         test.add(true);

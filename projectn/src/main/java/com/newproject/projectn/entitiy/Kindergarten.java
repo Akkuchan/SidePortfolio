@@ -1,13 +1,11 @@
 package com.newproject.projectn.entitiy;
 
 
-import com.newproject.projectn.entitiy.Enum.address.Address;
+import com.newproject.projectn.entitiy.address.Address;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -25,7 +23,7 @@ public class Kindergarten {
 
     String name;
 
-    String type;// 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
+    Enum Type;// 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
     @OneToOne
     @JoinColumn(name = "address_id")
     Address address;// 주소 + 우편번호
@@ -59,5 +57,22 @@ public class Kindergarten {
         this.address = address;
     }
 
+
+     enum Type{
+        // 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
+        CHUNGBUK("민간"),
+        CHUNGNAM("국공립"),
+        GYEONGBUK("법인-단체 등"),
+        BYEONGNAM("직장"),
+        JEONNAM("가정"),
+        ;
+
+
+        private String type;
+
+        Type(String type) {
+            this.type = type;
+        }
+    }
 
 }

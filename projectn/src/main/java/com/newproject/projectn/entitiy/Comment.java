@@ -15,10 +15,10 @@ public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long commentId;
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "commenting_user_id")
     User commentingUser;
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "commented_post_id")
     Post commentedPost;
     String title; //제목

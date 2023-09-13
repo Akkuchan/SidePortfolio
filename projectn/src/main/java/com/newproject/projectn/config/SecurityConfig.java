@@ -25,6 +25,9 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CorsConfig corsConfig;
+
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(
@@ -43,7 +46,9 @@ public class SecurityConfig {
                 ) .httpBasic(withDefaults())
                 .formLogin().disable()
                 .cors().disable()
-                .csrf().disable();
+                .csrf().disable()
+                .addFilter(corsConfig.corsFilter()); // ** CorsFilter 등록 **
+
 
 
 
