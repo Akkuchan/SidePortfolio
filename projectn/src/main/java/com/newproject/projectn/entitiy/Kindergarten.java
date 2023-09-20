@@ -2,6 +2,7 @@ package com.newproject.projectn.entitiy;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newproject.projectn.entitiy.Enum.Type;
 import com.newproject.projectn.entitiy.address.Address;
 import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -25,7 +26,7 @@ public class Kindergarten extends BaseTimeEntity {
 
     String name;
 
-    Enum Type;// 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
+    Type type;// 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
     @OneToOne
     @JoinColumn(name = "address_id")
     @JsonIgnore
@@ -60,22 +61,5 @@ public class Kindergarten extends BaseTimeEntity {
         this.address = address;
     }
 
-
-     enum Type{
-        // 운영타입(민간, 국공립, 사회복지법인, 법인-단체 등, 직장, 가정
-        CHUNGBUK("민간"),
-        CHUNGNAM("국공립"),
-        GYEONGBUK("법인-단체 등"),
-        BYEONGNAM("직장"),
-        JEONNAM("가정"),
-        ;
-
-
-        private String type;
-
-        Type(String type) {
-            this.type = type;
-        }
-    }
 
 }

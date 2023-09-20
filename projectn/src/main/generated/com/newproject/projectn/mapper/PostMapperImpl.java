@@ -1,15 +1,17 @@
 package com.newproject.projectn.mapper;
 
+import com.newproject.projectn.dto.post.FaqDtos;
 import com.newproject.projectn.dto.post.PatchPostDto;
 import com.newproject.projectn.dto.post.PostPostDto;
-import com.newproject.projectn.entitiy.Post;
+import com.newproject.projectn.entitiy.post.FAQ;
+import com.newproject.projectn.entitiy.post.Post;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-13T15:59:32+0900",
+    date = "2023-09-18T13:29:32+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -61,5 +63,10 @@ public class PostMapperImpl implements PostMapper {
         }
 
         return post;
+    }
+
+    @Override
+    public FAQ postFAQDtoToFAQEntity(FaqDtos.PostDto postDto) {
+        return null;
     }
 }

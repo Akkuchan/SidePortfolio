@@ -22,10 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,7 +74,7 @@ public class KindergartenService {
             kindergartenList.add(kindergartenRepository.findAllByAddress(ad).orElseThrow());
         }
 
-        if(kindergartenName!=null){
+        if(!Objects.equals(kindergartenName, "") || !kindergartenName.isEmpty()){
             return kindergartenList.stream().filter((kindergarten) -> kindergarten.getName().equals(kindergartenName)).collect(Collectors.toList());
         }
 

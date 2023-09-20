@@ -1,8 +1,10 @@
 package com.newproject.projectn.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.newproject.projectn.entitiy.Enum.UserGrade;
 import com.newproject.projectn.entitiy.address.Address;
 import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
+import com.newproject.projectn.entitiy.post.Post;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -48,6 +50,7 @@ public class User extends BaseTimeEntity {
 
     @OneToOne
     @JoinColumn(name = "address_ID")
+    @JsonIgnore
     private Address address;
 
     private Boolean emailAvailable;// 이메일 수신여부
@@ -61,6 +64,10 @@ public class User extends BaseTimeEntity {
 
     @OneToMany
     private List<Comment> CommentList;
+
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Post> postList = new ArrayList<>();
 
 
 

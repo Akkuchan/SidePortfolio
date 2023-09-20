@@ -26,17 +26,17 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> postUser(@RequestBody PostUserDto postDto){
-        User postingUser = mapper.postUserDtoToUserEntity(postDto);
+        User postingUser = mapper.postUserDtoToUserEntity2(postDto);
         postingUser.setImage("https://img.freepik.com/premium-photo/portrait-of-a-handsome-young-man_53876-38137.jpg");//이미지 로직 생성전 임시파일
 
 
-        User user = userService.createUser(postingUser, postDto.getDuplicationCheck());
+        User user = userService.createUser(postingUser, postDto.getDuplicationCheck(), postDto.getCityId(), postDto.getDetails(), postDto.getZipcode());
 
         return new ResponseEntity<User>(user,HttpStatus.OK);
     }
 
     @PostMapping("/email/check")
-    public ResponseEntity<String> checkEmail(@RequestBody EmailCheckDto emailCheckDto){
+    public ResponseEntity<String> checkEmailDuplication(@RequestBody EmailCheckDto emailCheckDto){
         if(userService.checkEmailDuplication(emailCheckDto.getEmail())){
             return new ResponseEntity<>("중복된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }else{
@@ -44,7 +44,7 @@ public class UserController {
         }
     }
     @PostMapping("/username/check")
-    public ResponseEntity<String> checkUsername(@RequestBody UsernameCheckDto usernameCheckDto){
+    public ResponseEntity<String> checkUsernameDuplication(@RequestBody UsernameCheckDto usernameCheckDto){
         if(userService.checkUsernameDuplication(usernameCheckDto.getUsername())){
             return new ResponseEntity<>("중복된 유저명입니다.", HttpStatus.BAD_REQUEST);
         }else{
@@ -61,7 +61,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable long userId){
+    public ResponseEntity<User> getUserInfo(@PathVariable long userId){
 
         User user = userService.findUser(userId);
 
@@ -81,7 +81,7 @@ public class UserController {
     @PatchMapping("/{userId}")
     public ResponseEntity<User> patchUser(@PathVariable long userId, @RequestBody PostUserDto test) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
-        User testUser = mapper.postUserDtoToUserEntity(test);
+        User testUser = mapper.postUserDtoToUserEntity2(test);
         testUser.setUserId(1);//테스트용 임시(patch메서드 생성 필요)
         testUser.setImage("https://img.freepik.com/premium-photo/portrait-of-a-handsome-young-man_53876-38137.jpg");//이미지 로직 생성전 임시파일
         User user = userService.editUser(userId, testUser);

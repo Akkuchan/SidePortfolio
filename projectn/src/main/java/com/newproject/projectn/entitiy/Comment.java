@@ -1,11 +1,10 @@
 package com.newproject.projectn.entitiy;
 
 import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
+import com.newproject.projectn.entitiy.post.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,6 +20,7 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "commented_post_id")
     Post commentedPost;
+
     String title; //제목
     String body; //댓글 내용
 

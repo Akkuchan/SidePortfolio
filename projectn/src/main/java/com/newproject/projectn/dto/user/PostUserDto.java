@@ -22,7 +22,10 @@ public class PostUserDto {
     public String phoneNumber;
 
     public UserGrade userType;
-    public Address address;
+
+    public Long cityId;// 주소 + 우편번호
+    public String details;
+    public String zipcode;
 
     public Boolean emailAvailable;// 이메일 수신여부
     public Boolean smsAvailable;// sms 수신여부

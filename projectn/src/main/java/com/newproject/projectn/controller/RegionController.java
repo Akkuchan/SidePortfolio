@@ -22,7 +22,7 @@ public class RegionController {
     RegionMapper regionMapper;
 
 
-    @PostMapping("/state/v1")
+    @PostMapping("/create/state/v1")
     public ResponseEntity<State> postState(@RequestBody PostStateDto postStateDto){
         State newState = regionMapper.postStateDtoToStateEntity(postStateDto);
 
@@ -32,7 +32,7 @@ public class RegionController {
 
     }
 
-    @PostMapping("/city/v1")
+    @PostMapping("/create/city/v1")
     public ResponseEntity<City> postCity(@RequestBody PostCityDto postCityDto){
         City newCity = regionMapper.postCityDtoToCityEntity(postCityDto);
         City addedCity = regionService.addNewCity(postCityDto.getStateName(), newCity);

@@ -1,10 +1,10 @@
-package com.newproject.projectn.controller;
+package com.newproject.projectn.controller.post;
 
 import com.newproject.projectn.Service.PostService;
 import com.newproject.projectn.Service.UserService;
 import com.newproject.projectn.dto.post.PatchPostDto;
 import com.newproject.projectn.dto.post.PostPostDto;
-import com.newproject.projectn.entitiy.Post;
+import com.newproject.projectn.entitiy.post.Post;
 import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.mapper.PostMapper;
 import lombok.AllArgsConstructor;
@@ -42,13 +42,33 @@ public class PostController {
     }
 
     @GetMapping("/list/{pageIdx}")
-    public ResponseEntity<List<Post>> getPostList(@PathVariable int pageIdx){
+    public ResponseEntity<List<Post>> getPostList(@RequestParam int postPerPage , @PathVariable int pageIdx){
 
-        List<Post> postList = postService.findPostList(pageIdx);
+        List<Post> postList = postService.findPostList(pageIdx, postPerPage);
 
         return new ResponseEntity<>(postList, HttpStatus.OK);
 
     }
+
+    @GetMapping("/list/popular/v1")
+    public ResponseEntity<List<Post>> getPopularPostList(){
+
+        List<Post> postList = postService.findPopularList();
+
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/list/user/{userId}")
+    public ResponseEntity<List<Post>> getSpecificUserPost(@PathVariable Long userId){
+
+        List<Post> postList = postService.findSpecificUserPostList(userId);
+
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+
+    }
+
+
 
     @PatchMapping
     public ResponseEntity<Post> patchPost(@RequestBody PatchPostDto patchPostDto){

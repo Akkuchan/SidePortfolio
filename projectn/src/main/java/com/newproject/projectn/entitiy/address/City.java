@@ -1,6 +1,7 @@
 package com.newproject.projectn.entitiy.address;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newproject.projectn.entitiy.post.LocalInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,5 +31,9 @@ public class City {
 
     @JsonIgnore
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
-    List<Address> cities= new ArrayList<>();
+    List<Address> addressList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    List<LocalInfo> localInfoList= new ArrayList<>();
 }

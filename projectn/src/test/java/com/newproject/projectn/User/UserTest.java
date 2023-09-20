@@ -47,7 +47,7 @@ public class UserTest {
         test.add(true);
         test.add(true);
         test.add(true);
-        User createdUser = userService.createUser(testUser,test);
+        User createdUser = userService.createUser(testUser,test, 28L, "상세주소", "11111");
 
 
         assertEquals("pohd8494@naver.com", createdUser.getEmail());

@@ -3,6 +3,7 @@ package com.newproject.projectn.controller;
 import com.newproject.projectn.Service.KindergartenService;
 import com.newproject.projectn.dto.kindergarten.PatchKindergartenDto;
 import com.newproject.projectn.dto.kindergarten.PostKindergartenDto;
+import com.newproject.projectn.dto.kindergarten.ResponseKindergartenDto;
 import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.mapper.KindergartenMapper;
 import com.newproject.projectn.repository.AddressRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("kindergarten")
@@ -25,10 +27,10 @@ public class KindergartenController {
     KindergartenMapper mapper;
     AddressRepository addressRepository;
 
-    @PostMapping
+    @PostMapping("/create/v1")
     public ResponseEntity<Kindergarten> postKindergarten(@RequestBody PostKindergartenDto postKindergartenDto){
 
-        Kindergarten kindergarten = mapper.postKindergartenDtoToKindergartenEntity(postKindergartenDto);
+        Kindergarten kindergarten = KindergartenMapper.postKindergartenDtoToKindergartenEntity(postKindergartenDto);
         Kindergarten newKindergarten = kindergartenService.createKindergarten(kindergarten, postKindergartenDto.getCityId(),postKindergartenDto.getDetails(), postKindergartenDto.getZipcode() );
         return new ResponseEntity<Kindergarten>(newKindergarten,HttpStatus.OK);
 
@@ -42,7 +44,7 @@ public class KindergartenController {
         return new ResponseEntity<Kindergarten>(kindergarten, HttpStatus.OK);
     }
 
-    @GetMapping("/list/v1/{pageIdx}")
+    @GetMapping("/list/{pageIdx}/v1")
     public ResponseEntity<List<Kindergarten>> getKindergartenListV1(@PathVariable Integer pageIdx){
 
         List<Kindergarten> kindergartenList = kindergartenService.findKindergartenList(pageIdx-1);
@@ -53,21 +55,19 @@ public class KindergartenController {
 
     }
 
-    @GetMapping("/list/v2/{pageIdx}")
-    public ResponseEntity<List<Kindergarten>> getKindergartenListV2(@RequestParam String state, @RequestParam String city, @RequestParam @Nullable String kindergartenName, @PathVariable Integer pageIdx){
+    @GetMapping("/list/{pageIdx}/v2")
+    public ResponseEntity<List<ResponseKindergartenDto>> getKindergartenListV2(@RequestParam String state, @RequestParam String city, @RequestParam @Nullable String kindergartenName, @PathVariable Integer pageIdx){
 
 
 
 
         List<Kindergarten> kindergartenList = kindergartenService.findKindergartenListByStateAndCity(state, city, kindergartenName, pageIdx-1);
+        List< ResponseKindergartenDto> responseDtoList = kindergartenList.stream().map(KindergartenMapper::KindergartenEntityToResponseKindergartenDto).collect(Collectors.toList());
 
 
-
-        return new ResponseEntity<List<Kindergarten>>(kindergartenList,HttpStatus.OK);
+        return new ResponseEntity<>(responseDtoList,HttpStatus.OK);
 
     }
-
-
     @PatchMapping
     public ResponseEntity<Kindergarten> patchKindergarten(@RequestBody PatchKindergartenDto patchKindergartenDto) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         Kindergarten kindergarten  =mapper.patchKindergartenDtoToKindergartenEntity(patchKindergartenDto);
@@ -76,7 +76,7 @@ public class KindergartenController {
 
     }
 
-    @DeleteMapping("/{kindergartenId}")
+    @DeleteMapping("/delete/{kindergartenId}/v1")
     public ResponseEntity<Kindergarten> deleteKindergarten(@PathVariable Long kindergartenId){
 
         kindergartenService.removeKindergarten(kindergartenId);

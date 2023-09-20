@@ -3,7 +3,10 @@ package com.newproject.projectn.Service;
 import com.newproject.projectn.config.exception.BusinessLogicException;
 import com.newproject.projectn.config.exception.ExceptionCode;
 import com.newproject.projectn.entitiy.User;
+import com.newproject.projectn.entitiy.address.Address;
+import com.newproject.projectn.entitiy.address.City;
 import com.newproject.projectn.repository.AddressRepository;
+import com.newproject.projectn.repository.CityRepository;
 import com.newproject.projectn.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -23,13 +26,17 @@ public class UserService {
 
     AddressRepository addressRepository;
     UserRepository userRepository;
+    CityRepository cityRepository;
     @Transactional
-    public User createUser(User user, List<Boolean> duplicationCheck) {
+    public User createUser(User user, List<Boolean> duplicationCheck, Long cityId, String details, String zipcode) {
         for(Boolean check: duplicationCheck){
             if (check) {System.out.println("중복검사PASS");}
             else {throw new BusinessLogicException(ExceptionCode.DUPLICATION_CHECK_IS_WRONG);}
         }
-        addressRepository.save(user.getAddress());
+
+        City city = cityRepository.findById(cityId).orElseThrow();
+        Address newAddress = addressRepository.save(new Address(city, details, zipcode));
+        user.setAddress(newAddress);
         return userRepository.save(user);
     }
 

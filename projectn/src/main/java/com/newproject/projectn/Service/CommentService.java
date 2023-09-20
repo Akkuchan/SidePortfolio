@@ -3,19 +3,15 @@ package com.newproject.projectn.Service;
 import com.newproject.projectn.config.exception.BusinessLogicException;
 import com.newproject.projectn.config.exception.ExceptionCode;
 import com.newproject.projectn.entitiy.Comment;
-import com.newproject.projectn.entitiy.Post;
-import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.repository.CommentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
