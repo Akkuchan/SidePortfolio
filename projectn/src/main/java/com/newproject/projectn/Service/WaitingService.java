@@ -39,4 +39,9 @@ public class WaitingService {
 
 
     }
+
+    public List<Waiting> findPedingWaitingList() {
+        return waitingRepository.findAll(PageRequest.of(0, 3, Sort.by("updateTime").descending())).stream().toList();
+
+    }
 }

@@ -5,7 +5,10 @@ import com.newproject.projectn.entitiy.Waiting;
 import com.newproject.projectn.entitiy.address.Address;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
@@ -24,4 +27,14 @@ public interface KindergartenRepository extends JpaRepository<Kindergarten, Long
 //    Page<Kindergarten> findAll(Address address, PageRequest updateTime);
 
     Optional<Kindergarten> findAllByAddress(Address address);
+
+
+    @Query("SELECT k\n" +
+            "FROM Kindergarten k \n" +
+            "JOIN Address a ON k.address.id = a.id\n" +
+            "JOIN a.city c\n" +
+            "WHERE c.id = :cityId " )
+    Page<Kindergarten> findAllByCity3(@Param("cityId") Long cityId, Pageable pageable);
+
+
 }

@@ -10,6 +10,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.*;
 
 @Entity
 @Setter
@@ -52,6 +53,9 @@ public class Kindergarten extends BaseTimeEntity {
     Integer teacherNum;// 선생님 수
     Integer capacity;// 수용인원
     Integer quota;//현원
+
+    @OneToMany(fetch = FetchType.LAZY)
+    List<Enroll> enrollList = new ArrayList<>();
 
     public Address getAddress() {
         return address;

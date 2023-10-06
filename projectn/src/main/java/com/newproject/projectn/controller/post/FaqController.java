@@ -1,6 +1,7 @@
 package com.newproject.projectn.controller.post;
 
 import com.newproject.projectn.Service.post.FaqService;
+import com.newproject.projectn.config.UriMaker;
 import com.newproject.projectn.dto.post.FaqDtos;
 import com.newproject.projectn.entitiy.post.FAQ;
 import com.newproject.projectn.mapper.PostMapper;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 @RestController
 @RequestMapping("faq")
@@ -19,31 +21,52 @@ public class FaqController {
     FaqService faqService;
     PostMapper  mapper;
 
-    @PostMapping
-    public ResponseEntity<FAQ> postFaq(@RequestBody FaqDtos.PostDto postDto){
+    UriMaker uriMaker;
+
+    @PostMapping("/create/v1")
+    public ResponseEntity<String> postFaq(@RequestBody FaqDtos.PostDto postDto){
         FAQ newFaq = mapper.postFAQDtoToFAQEntity(postDto);
-        FAQ createdFaq  = faqService.createFaq(newFaq);
-
-        return new ResponseEntity<FAQ>( createdFaq, HttpStatus.OK);
+        FAQ createdFaq  = faqService.createFaq(newFaq, postDto.getUserId());
+        String redirectUri = uriMaker.uriMaker("faq", "" + createdFaq.getPostId());
+        return new ResponseEntity<String>(redirectUri, HttpStatus.OK);
     }
 
-    @GetMapping("/{faqId}")
-    public ResponseEntity<FAQ> getFaq(@PathVariable Long faqId){
+    @GetMapping("/{faqId}/v1")
+    public ResponseEntity<FaqDtos.ResponseDtoForDetailPage> getFaq(@PathVariable Long faqId){
         FAQ foundFAQ = faqService.findFaq(faqId);
-        return new ResponseEntity<FAQ>( foundFAQ, HttpStatus.OK);
+        FaqDtos.ResponseDtoForDetailPage detailedResponseDto = mapper.FAQEntityToSingleResponseDto(foundFAQ);
+        detailedResponseDto.setUserId(foundFAQ.getPostUser().getUserId());
+        detailedResponseDto.setNickName(foundFAQ.getPostUser().getNickName());
+
+        return new ResponseEntity<FaqDtos.ResponseDtoForDetailPage>(detailedResponseDto, HttpStatus.OK);
 
     }
-    @PatchMapping
-    public ResponseEntity<FAQ> patchFaq(@RequestBody FaqDtos.PatchDto patchDto) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+
+    @GetMapping("/main/list/v1")
+    public ResponseEntity< List<FaqDtos.ListResponseDto>> getMainFaqList(){
+        List<FaqDtos.ListResponseDto> foundFAQList = faqService.findFaqList(0, 4);
+        return new ResponseEntity< List<FaqDtos.ListResponseDto>>(foundFAQList, HttpStatus.OK);
+    }
+
+    @GetMapping("/list/{pageIdx}/v1")
+    public ResponseEntity< List<FaqDtos.ListResponseDto>> getFaqList(@PathVariable Integer pageIdx, @RequestParam Integer elementPerPage){
+        List<FaqDtos.ListResponseDto> foundFAQList = faqService.findFaqList(pageIdx, elementPerPage);
+        return new ResponseEntity< List<FaqDtos.ListResponseDto>>(foundFAQList, HttpStatus.OK);
+    }
+
+
+
+    @PatchMapping("/edit/v1")
+    public ResponseEntity<String> patchFaq(@RequestBody FaqDtos.PatchDto patchDto) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         FAQ editFaq = mapper.patchFAQDtoToFAQEntity(patchDto);
         FAQ editedFaq = faqService.editFaq(editFaq);
-        return new ResponseEntity<FAQ>( editedFaq, HttpStatus.OK);
+        String redirectUri = uriMaker.uriMaker("faq", "/" + editedFaq.getPostId());
+        return new ResponseEntity<String>( redirectUri, HttpStatus.OK);
 
     }
-    @DeleteMapping("/{faqId}")
+    @DeleteMapping("/delete/{faqid}/v1")
     public void deleteFaq(@PathVariable Long faqId){
-        faqService.deleteFqa(faqId);
-
+        faqService.deleteFaq(faqId);
     }
 
 }

@@ -72,7 +72,8 @@ public interface KindergartenMapper {
                 .name(kindergarten.getName())
                 .type(kindergarten.getType().name())
                 .number(kindergarten.getNumber()).latitude(kindergarten.getLatitude())
-                .longitude(kindergarten.getLongitude());
+                .longitude(kindergarten.getLongitude())
+                .kindergartenId(kindergarten.getKindergartenId());
 
         return responseDto.build();
     }

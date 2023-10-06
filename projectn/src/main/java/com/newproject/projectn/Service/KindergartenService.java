@@ -2,6 +2,8 @@ package com.newproject.projectn.Service;
 
 import com.newproject.projectn.config.exception.BusinessLogicException;
 import com.newproject.projectn.config.exception.ExceptionCode;
+import com.newproject.projectn.dto.Multi_ResponseDTO;
+import com.newproject.projectn.dto.PageInfoDto;
 import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.entitiy.address.Address;
@@ -12,6 +14,7 @@ import com.newproject.projectn.repository.CityRepository;
 import com.newproject.projectn.repository.KindergartenRepository;
 import com.newproject.projectn.repository.StateRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
@@ -56,29 +59,20 @@ public class KindergartenService {
 
 
 
-    public List<Kindergarten> findKindergartenList(int pageIdx) {
+    public Page<Kindergarten> findKindergartenList(int pageIdx) {
 
-        return kindergartenRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("updateTime").descending()))
-                .stream().toList();
+        return kindergartenRepository.findAll(PageRequest.of(pageIdx, 30, Sort.by("updateTime").descending()));
+
     }
 
-    public List<Kindergarten> findKindergartenListByStateAndCity(String state, String city, @Nullable String kindergartenName, int pageIdx) {/// 리팩토링 필요 for문으로 db와 통신 너무 많이 함
+    public Page<Kindergarten>  findKindergartenListByStateAndCity(String state, String city, @Nullable String kindergartenName, int pageIdx, int elementPerPage) {/// 리팩토링 필요 for문으로 db와 통신 너무 많이 함
         State foundState = stateRepository.findByStateName(state).orElseThrow();
         City city1 = cityRepository.findByStateAndCityName(foundState, city).orElseThrow();
-        List<Address> addresses = addressRepository.findByCity(city1);
+//        List<Address> addresses = addressRepository.findAllByCity(city1, PageRequest.of(pageIdx, 10, Sort.by("regTime").descending())).stream().toList();
+//        List<Address> addresses = addressRepository.findAllByCity2(city1.getCityId(), PageRequest.of(pageIdx, 10, Sort.by("regTime").descending())).stream().toList();
+        return  kindergartenRepository.findAllByCity3(city1.getCityId(), PageRequest.of(pageIdx, 10, Sort.by("regTime").ascending()));
 
-        List<Kindergarten> kindergartenList = new ArrayList<>();
 
-
-        for(Address ad : addresses){
-            kindergartenList.add(kindergartenRepository.findAllByAddress(ad).orElseThrow());
-        }
-
-        if(!Objects.equals(kindergartenName, "") || !kindergartenName.isEmpty()){
-            return kindergartenList.stream().filter((kindergarten) -> kindergarten.getName().equals(kindergartenName)).collect(Collectors.toList());
-        }
-
-        return kindergartenList;
 
     }
 

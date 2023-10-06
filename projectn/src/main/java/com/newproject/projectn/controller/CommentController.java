@@ -1,7 +1,7 @@
 package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.CommentService;
-import com.newproject.projectn.Service.PostService;
+import com.newproject.projectn.Service.post.PostService;
 import com.newproject.projectn.Service.UserService;
 import com.newproject.projectn.dto.comment.PatchCommentDto;
 import com.newproject.projectn.dto.comment.PostCommentDto;

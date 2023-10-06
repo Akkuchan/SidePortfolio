@@ -7,12 +7,14 @@ import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Getter
+@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn//구분자 컬럼을 말함. 조인 전략과 단일 테이블 전략에서
 public class Post extends BaseTimeEntity {//자유소통글, 인기글에 사용
@@ -41,4 +43,7 @@ public class Post extends BaseTimeEntity {//자유소통글, 인기글에 사용
         this.postUser = postUser;
     }
 
+    public void setViewPlus1(){
+        ++view;
+    }
 }

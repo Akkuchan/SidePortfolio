@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ResponseKindergartenDto {
-
+    Long kindergartenId;
     String state;
     String city;
     String name;

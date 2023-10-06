@@ -30,7 +30,7 @@ public class WaitingController {
 
         Waiting newWaiting = mapper.postWaitingDtoToWaitingEntity(postWaitingDto);
         newWaiting.setUser(userService.findUser(postWaitingDto.getUserId()));
-        newWaiting.setKindergarten(kindergartenService.findKindergartenById(postWaitingDto.getKindergartenId()));
+
 
         Waiting createdWaiting = waitingService.createWaiting(newWaiting);
         return new ResponseEntity<Waiting>(createdWaiting, HttpStatus.OK);
@@ -53,6 +53,16 @@ public class WaitingController {
         return new ResponseEntity<List<Waiting>>(waitingList, HttpStatus.OK);
 
     }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<Waiting>> getPendingListForMain(){
+
+        List<Waiting> waitingList = waitingService.findPedingWaitingList();
+
+        return new ResponseEntity<List<Waiting>>(waitingList, HttpStatus.OK);
+
+    }
+
 
     @PatchMapping
     public ResponseEntity<Waiting> patchWaiting(){
