@@ -3,11 +3,13 @@ package com.newproject.projectn.controller.post;
 import com.newproject.projectn.Service.post.PostService;
 import com.newproject.projectn.Service.UserService;
 import com.newproject.projectn.config.UriMaker;
+import com.newproject.projectn.dto.Multi_ResponseDTO;
 import com.newproject.projectn.dto.post.PostDtos;
 import com.newproject.projectn.entitiy.post.Post;
 import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.mapper.PostMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +35,9 @@ public class PostController {
         newPost.setPostUser(user);
         Post post = postService.createPost(newPost);
 
-        String redirectUri = uriMaker.uriMaker("post", ""+ post.getPostId());
+        String redirectUri = uriMaker.uriMaker("post", ""+ post.getPostId()+"/v1");
         return new ResponseEntity<>(redirectUri, HttpStatus.OK);
     }
-
     @GetMapping("/{postId}/v1")
     public ResponseEntity<PostDtos.ResponseDtoForDetailPage> getPost(@PathVariable Long postId){
         Post post = postService.findPost(postId);
@@ -48,46 +49,74 @@ public class PostController {
     }
 
     @GetMapping("/main/list/popular/v1")//커뮤니티의 인기글에 내보낼 리스트
-    public ResponseEntity<List<Post>> getMainPopularPostList(){
-        List<Post> postList = postService.findPopularList();
+    public ResponseEntity<List<PostDtos.MainResponseDto>> getMainPopularPostList(){
+        List<Post> postList = postService.findPopularListForMain();
         List<PostDtos.MainResponseDto> resultList = postList.stream()
                 .map((element) -> PostDtos.MainResponseDto.builder()
+                        .postId(element.getPostId())
                         .title(element.getTitle())
-                        .url(uriMaker.uriMaker("post", "/" + element.getPostId()))
-                        .regTime(element.getRegTime())
-                        .build()).toList();
-
-        return new ResponseEntity<>(postList, HttpStatus.OK);
-    }
-
-    @GetMapping("/main/list/v1")// 커뮤니티의 오늘의 글에 올릴 리스트
-    public ResponseEntity<List<PostDtos.MainResponseDto>> getMainPostList(){
-
-        List<Post> postList = postService.findPostList(0, 4);
-        List<PostDtos.MainResponseDto> resultList = postList.stream()
-                .map((element) -> PostDtos.MainResponseDto.builder()
-                        .title(element.getTitle())
-                        .url(uriMaker.uriMaker("post", "/" + element.getPostId()))
+                        .url(uriMaker.uriMaker("post", "/" + element.getPostId() + "/v1"))
+                        .author(element.getPostUser().getNickName())
+                        .recommend(element.getRecommend())
+                        .commentNum(element.getCommentList().size())
+                        .view(element.getView())
                         .regTime(element.getRegTime())
                         .build()).toList();
 
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
+    @GetMapping("/main/list/v1")// 커뮤니티의 오늘의 글에 올릴 리스트
+    public ResponseEntity<List<PostDtos.MainResponseDto>> getMainPostList(){
+
+        List<Post> postList = postService.findPostList(1, 4).stream().toList();
+        List<PostDtos.MainResponseDto> resultList = postList.stream()
+                .map((element) -> PostDtos.MainResponseDto.builder()
+                        .postId(element.getPostId())
+                        .title(element.getTitle())
+                        .url(uriMaker.uriMaker("post", "/" + element.getPostId()+ "/v1"))
+                        .regTime(element.getRegTime())
+                        .author(element.getPostUser().getNickName())
+                        .recommend(element.getRecommend())
+                        .commentNum(element.getCommentList().size())
+                        .build()).toList();
+
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
+
     @GetMapping("/list/{pageIdx}/v1")//오늘의 글 페이지리스트 보기
-    public ResponseEntity<List<PostDtos.ResponseDtoForList>> getPostList(@RequestParam int postPerPage , @PathVariable int pageIdx){
-        List<Post> postList = postService.findPostList(pageIdx, postPerPage);
+    public ResponseEntity<Multi_ResponseDTO> getPostList(@RequestParam int postPerPage , @PathVariable int pageIdx){
+        Page<Post> postList = postService.findPostList(pageIdx, postPerPage);
         List<PostDtos.ResponseDtoForList> resultDtoList =  postList.stream().map((element) -> PostDtos.ResponseDtoForList.builder()
-                .title(element.getTitle())
-                .url(uriMaker.uriMaker("post", ""+ element.getPostId()))
-                .commentNum(element.getCommentList().size())
-                .writerName(element.getPostUser().getNickName())
-                .views(element.getView())
-                .regTime(element.getRegTime())
-                .build())
+                        .postId(element.getPostId())
+                        .title(element.getTitle())
+                        .url(uriMaker.uriMaker("post", ""+ element.getPostId()+"/v1"))
+                        .commentNum(element.getCommentList().size())
+                        .writerName(element.getPostUser().getNickName())
+                        .recommend(element.getRecommend())
+                        .regTime(element.getRegTime())
+                        .build())
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(resultDtoList, HttpStatus.OK);
+        return new ResponseEntity<>(new Multi_ResponseDTO<>(resultDtoList, postList), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/popular/list/{pageIdx}/v1")//오늘의 글 페이지리스트 보기
+    public ResponseEntity<Multi_ResponseDTO> getPopularPostList(@RequestParam int postPerPage , @PathVariable int pageIdx){
+        Page<Post> postList = postService.findPopularList(pageIdx, postPerPage);
+        List<PostDtos.ResponseDtoForList> resultDtoList =  postList.stream().map((element) -> PostDtos.ResponseDtoForList.builder()
+                        .postId(element.getPostId())
+                        .title(element.getTitle())
+                        .url(uriMaker.uriMaker("post", ""+ element.getPostId()+"/v1"))
+                        .commentNum(element.getCommentList().size())
+                        .writerName(element.getPostUser().getNickName())
+                        .recommend(element.getRecommend())
+                        .regTime(element.getRegTime())
+                        .build())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Multi_ResponseDTO<>(resultDtoList, postList), HttpStatus.OK);
     }
 
 
@@ -101,7 +130,6 @@ public class PostController {
                         .title(element.getTitle())
                         .url(uriMaker.uriMaker("post", "/" + element.getPostId()))
                         .writerName(element.getPostUser().getNickName())
-                        .views(element.getView()).regTime(element.getRegTime())
                         .commentNum(element.getCommentList().size())
                         .build());
         return new ResponseEntity<>(postList, HttpStatus.OK);

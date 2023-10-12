@@ -36,7 +36,7 @@ public interface EnrollMapper {
 
 
         EnrollDtos.ResultForList.ResultForListBuilder resultDtoBuilder = EnrollDtos.ResultForList.builder();
-        resultDtoBuilder.title(enroll.getKindergarten().getName() + "곧 마감 예정!!").enrollDate(enrollDate).closed(enroll.getEnrollEndTime().isBefore(LocalDateTime.now()));
+        resultDtoBuilder.enrollId(enroll.getEnrollId()).title(enroll.getKindergarten().getName() + "곧 마감 예정!!").enrollDate(enrollDate).closed(enroll.getEnrollEndTime().isBefore(LocalDateTime.now()));
         return resultDtoBuilder.build();
     }
 };

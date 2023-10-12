@@ -16,5 +16,6 @@ public class ResponseKindergartenDto {
     String number;// 전화번호
     Double latitude;//위도
     Double longitude;//경도
+    String url;
 
 }

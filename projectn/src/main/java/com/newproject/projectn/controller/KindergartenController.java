@@ -1,6 +1,7 @@
 package com.newproject.projectn.controller;
 
 import com.newproject.projectn.Service.KindergartenService;
+import com.newproject.projectn.config.UriMaker;
 import com.newproject.projectn.dto.Multi_ResponseDTO;
 import com.newproject.projectn.dto.PageInfoDto;
 import com.newproject.projectn.dto.kindergarten.PatchKindergartenDto;
@@ -29,6 +30,7 @@ public class KindergartenController {
     KindergartenService kindergartenService;
     KindergartenMapper mapper;
     AddressRepository addressRepository;
+    UriMaker uriMaker;
 
     @PostMapping("/create/v1")
     public ResponseEntity<Kindergarten> postKindergarten(@RequestBody PostKindergartenDto postKindergartenDto){
@@ -63,6 +65,7 @@ public class KindergartenController {
 
         Page<Kindergarten> kindergartenPage = kindergartenService.findKindergartenListByStateAndCity(state, city, kindergartenName, pageIdx-1, elementPerPage);
         List<ResponseKindergartenDto> responseDtoList = kindergartenPage.stream().toList().stream().map(KindergartenMapper::KindergartenEntityToResponseKindergartenDto).collect(Collectors.toList());
+        responseDtoList.stream().peek((e) -> e.setUrl(uriMaker.uriMaker("kindergarten", ""+ e.getKindergartenId()))).collect(Collectors.toList());
 
         return new ResponseEntity<>( new Multi_ResponseDTO( responseDtoList, kindergartenPage),HttpStatus.OK);
 

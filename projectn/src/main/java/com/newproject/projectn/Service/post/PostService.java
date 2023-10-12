@@ -7,6 +7,7 @@ import com.newproject.projectn.entitiy.post.Post;
 import com.newproject.projectn.repository.UserRepository;
 import com.newproject.projectn.repository.post.PostRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -30,13 +31,23 @@ public class PostService {
 
     }
 
-    public List<Post> findPostList(int pageIdx, int postPerpage) {// 오늘의글 가져오기
-        return postRepository.findAll(PageRequest.of(pageIdx, postPerpage, Sort.by("updateTime").descending()))
-        .stream().toList();
+    public Page<Post> findPostList(int pageIdx, int postPerpage) {// 오늘의글 가져오기
+        return postRepository.findAll(PageRequest.of(pageIdx-1, postPerpage, Sort.by("updateTime").descending()));
+
 
     }
 
-    public List<Post> findPopularList() {//인기글 4개 가져오기
+
+    public Page<Post> findPopularList(int pageIdx, int postPerpage) {// 오늘의글 가져오기
+        return postRepository.findAllByRecommendGreaterThan(10,PageRequest.of(pageIdx-1, 10, Sort.by("updateTime").descending()));
+
+
+    }
+
+
+
+
+    public List<Post> findPopularListForMain() {//인기글 4개 가져오기
         return postRepository.findAll(PageRequest.of(0, 4, Sort.by("recommend", "regTime").descending()))
                 .stream().toList();
 

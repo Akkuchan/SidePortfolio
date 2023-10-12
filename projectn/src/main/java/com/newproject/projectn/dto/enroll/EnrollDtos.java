@@ -61,6 +61,7 @@ public class EnrollDtos {
     @AllArgsConstructor
     @Builder
     public static class ResultForList   {
+        long enrollId;
         String title;
         String enrollDate;
         boolean closed;

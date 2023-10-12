@@ -38,9 +38,13 @@ public class PostDtos {
     @AllArgsConstructor
     @Builder
     public static class MainResponseDto {
-
+        long postId;
         String title;
         String url;
+        int recommend;
+        int commentNum;
+        int view;
+        String author;
         LocalDateTime regTime;
     }
 
@@ -49,12 +53,12 @@ public class PostDtos {
     @AllArgsConstructor
     @Builder
     public static class ResponseDtoForList {
-
+        long postId;
         String title;
         String url;
-        Integer commentNum;
+        int commentNum;
         String writerName;
-        int views;
+        int recommend;
         LocalDateTime regTime;
     }
 
