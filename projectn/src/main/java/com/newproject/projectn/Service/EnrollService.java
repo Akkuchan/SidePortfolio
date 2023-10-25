@@ -28,10 +28,11 @@ public class EnrollService {
 
     public Page<Enroll> findEnrollList(int pageIdx, int pageSize){
         return getEnrolls(pageIdx,pageSize, "enrollEndTime");
-
     }
 
-
+    public Enroll findEnroll(long enrollId){
+           return enrollRepository.findById(enrollId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_SUCH_ELEMENT));
+    }
     public Enroll createEnroll(Enroll newEnroll) {
         return enrollRepository.save(newEnroll);
     }
@@ -51,5 +52,11 @@ public class EnrollService {
     private Page<Enroll> getEnrolls(int pageIdx, int pageSize, String sortOption) {
         return enrollRepository.findAll(PageRequest.of(pageIdx-1, pageSize, Sort.by(sortOption).descending()));
     }
+
+    public Page<Enroll> getThreePendingEnrolls( ) {
+
+        return enrollRepository.findByEnrollEndTimeAfter(LocalDateTime.now(), PageRequest.of(0, 3, Sort.by("enrollEndTime").descending()));
+    }
+
 
 }

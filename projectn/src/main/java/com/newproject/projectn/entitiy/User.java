@@ -1,6 +1,7 @@
 package com.newproject.projectn.entitiy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newproject.projectn.config.security.auth.jwt.Token;
 import com.newproject.projectn.entitiy.Enum.UserGrade;
 import com.newproject.projectn.entitiy.address.Address;
 import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
@@ -9,6 +10,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 @Entity
@@ -16,12 +19,11 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private Integer  userId;
 
     @Column
     private String username;// 로그인 아이디
@@ -47,18 +49,21 @@ public class User extends BaseTimeEntity {
     @Column
     private UserGrade userType; // 유저타입, 학부모, 선생님, 관리자 Enum으로 변경필요
 
+    @Enumerated(value = EnumType.STRING)
+    private Role roles = Role.USER;
 
     @OneToOne
     @JoinColumn(name = "address_ID")
     @JsonIgnore
     private Address address;
-
     private Boolean emailAvailable;// 이메일 수신여부
     private Boolean smsAvailable;// sms 수신여부
     private Boolean isMarried;// 기혼여부
     private Boolean isPregnant;// 임신여부
     private Boolean hasChild;// 자녀여부
 
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
     @OneToMany
     private List<Waiting> waitingList;// 최대 3개까지 가능
 
@@ -71,5 +76,43 @@ public class User extends BaseTimeEntity {
 
 
 
+    public String getName() {
+        return username;
+    }
 
+    public Role getRolls(){
+        return roles;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        return roles.getAuthorities();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

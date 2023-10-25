@@ -18,7 +18,7 @@ public class Waiting extends BaseTimeEntity {// 유치원 대기자 목록 엔�
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long waitingListId;
+    private long waitingId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

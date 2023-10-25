@@ -33,7 +33,7 @@ public class Post extends BaseTimeEntity {//자유소통글, 인기글에 사용
     List<String> tags;//태그 목록
 
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany( mappedBy = "commentedPost", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<Comment> commentList = new ArrayList<>();
     public User getPostUser() {
         return postUser;
@@ -46,4 +46,6 @@ public class Post extends BaseTimeEntity {//자유소통글, 인기글에 사용
     public void setViewPlus1(){
         ++view;
     }
+
+    public void setRecommendPlus(){++recommend;}
 }

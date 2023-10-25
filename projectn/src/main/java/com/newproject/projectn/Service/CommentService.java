@@ -2,6 +2,7 @@ package com.newproject.projectn.Service;
 
 import com.newproject.projectn.config.exception.BusinessLogicException;
 import com.newproject.projectn.config.exception.ExceptionCode;
+import com.newproject.projectn.dto.recommend.RecommendDto;
 import com.newproject.projectn.entitiy.Comment;
 import com.newproject.projectn.repository.CommentRepository;
 import lombok.AllArgsConstructor;
@@ -76,5 +77,11 @@ public class CommentService {
             Method setFiled = foundObject.getClass().getDeclaredMethod(setMethodName, eachField.getType());
             setFiled.invoke(foundObject, value);
         }
+    }
+
+    public void addRecommend(RecommendDto.plusCommentRecommend recommendDto) {
+       Comment comment = commentRepository.findById(recommendDto.getCommentId()).orElseThrow();
+        comment.setRecommendPlus();
+        commentRepository.save(comment);
     }
 }

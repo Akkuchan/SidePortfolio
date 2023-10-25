@@ -4,9 +4,12 @@ import com.newproject.projectn.Service.post.PostService;
 import com.newproject.projectn.Service.UserService;
 import com.newproject.projectn.config.UriMaker;
 import com.newproject.projectn.dto.Multi_ResponseDTO;
+import com.newproject.projectn.dto.comment.CommentResponseDto;
 import com.newproject.projectn.dto.post.PostDtos;
+import com.newproject.projectn.entitiy.Comment;
 import com.newproject.projectn.entitiy.post.Post;
 import com.newproject.projectn.entitiy.User;
+import com.newproject.projectn.mapper.CommentMapper;
 import com.newproject.projectn.mapper.PostMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,29 +27,47 @@ public class PostController {
 
     PostService postService;
     UserService userService;
-    PostMapper mapper;
+    PostMapper postMapper;
+    CommentMapper commentMapper;
 
     UriMaker uriMaker;
 
     @PostMapping("/create/v1")
     public ResponseEntity<String> postPost(@RequestBody PostDtos.PostPostDto postDto){
         User user = userService.findUser(postDto.getUserId());
-        Post newPost = mapper.postPostDtoToPostEntity(postDto);
+        Post newPost = postMapper.postPostDtoToPostEntity(postDto);
         newPost.setPostUser(user);
+
         Post post = postService.createPost(newPost);
 
         String redirectUri = uriMaker.uriMaker("post", ""+ post.getPostId()+"/v1");
         return new ResponseEntity<>(redirectUri, HttpStatus.OK);
     }
+
+
+
+
+
+
     @GetMapping("/{postId}/v1")
     public ResponseEntity<PostDtos.ResponseDtoForDetailPage> getPost(@PathVariable Long postId){
         Post post = postService.findPost(postId);
-        PostDtos.ResponseDtoForDetailPage responseResult= mapper.PostEntityToResponseDtoForDetailPage(post);
+        PostDtos.ResponseDtoForDetailPage responseResult= postMapper.PostEntityToResponseDtoForDetailPage(post);
         responseResult.setNickName(post.getPostUser().getNickName());
         responseResult.setUserId(post.getPostUser().getUserId());
+        responseResult.setCommentResponseDtoList(commentResponseDtoMapper(post));
+
         return new ResponseEntity<>(responseResult, HttpStatus.OK);
 
     }
+
+
+    public  List<CommentResponseDto> commentResponseDtoMapper(Post post){
+        List<Comment> commentList = post.getCommentList();
+        return commentList.stream().map((comment) -> CommentMapper.commentEntityToResponseDto(post,comment)).collect(Collectors.toList());
+
+    }
+
 
     @GetMapping("/main/list/popular/v1")//커뮤니티의 인기글에 내보낼 리스트
     public ResponseEntity<List<PostDtos.MainResponseDto>> getMainPopularPostList(){
@@ -141,7 +162,7 @@ public class PostController {
     @PatchMapping("/edit/v1")
     public ResponseEntity<String> patchPost(@RequestBody PostDtos.PatchDto patchPostDto){
         User user = userService.findUser(patchPostDto.getUserId());
-        Post editPost = mapper.patchPostDtoToPostEntity(patchPostDto);
+        Post editPost = postMapper.patchPostDtoToPostEntity(patchPostDto);
         editPost.setPostUser(user);
         Post post = postService.editPost(editPost);
 

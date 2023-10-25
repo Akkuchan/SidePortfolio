@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-10-11T19:01:36+0900",
+    date = "2023-10-24T18:35:59+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -98,10 +98,7 @@ public class PostMapperImpl implements PostMapper {
         if ( list1 != null ) {
             responseDtoForDetailPage.tags( new ArrayList<String>( list1 ) );
         }
-        List<Comment> list2 = post.getCommentList();
-        if ( list2 != null ) {
-            responseDtoForDetailPage.commentList( new ArrayList<Comment>( list2 ) );
-        }
+        responseDtoForDetailPage.regTime( post.getRegTime() );
 
         return responseDtoForDetailPage.build();
     }

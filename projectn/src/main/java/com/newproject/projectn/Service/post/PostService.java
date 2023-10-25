@@ -2,6 +2,7 @@ package com.newproject.projectn.Service.post;
 
 import com.newproject.projectn.config.exception.BusinessLogicException;
 import com.newproject.projectn.config.exception.ExceptionCode;
+import com.newproject.projectn.dto.recommend.RecommendDto;
 import com.newproject.projectn.entitiy.User;
 import com.newproject.projectn.entitiy.post.Post;
 import com.newproject.projectn.repository.UserRepository;
@@ -73,5 +74,12 @@ public class PostService {
     public void removePost(long postId) {
         postRepository.findById(postId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NO_SUCH_ELEMENT));
         postRepository.deleteById(postId);
+    }
+
+    public void addRecommend(RecommendDto.plusPostRecommend recommendDto) {
+        Post foundPost = postRepository.findById(recommendDto.getPostId()).orElseThrow();
+        foundPost.setRecommendPlus();
+        postRepository.save(foundPost);
+
     }
 }

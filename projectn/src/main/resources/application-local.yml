@@ -33,6 +33,11 @@ spring:
       matching-strategy: ant_path_matcher
 
   security:
+    jwt:
+      secret-key: c5Y9kXtZILihrA+lGZqd2HOk+0w7VuEZE1A08QdR/9kwPDEvF25nonFwIyQ7ENe2
+      expiration: 86400000 # a day
+      refresh-token:
+       expiration: 604800000 # 7 days
     user:
       name: chan
       password: 123123

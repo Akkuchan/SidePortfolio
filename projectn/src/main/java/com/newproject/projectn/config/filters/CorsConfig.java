@@ -1,4 +1,4 @@
-package com.newproject.projectn.config;
+package com.newproject.projectn.config.filters;
 
 
 import org.springframework.context.annotation.Bean;

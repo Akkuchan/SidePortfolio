@@ -30,10 +30,14 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<Comment> postComment(@RequestBody PostCommentDto postCommentDto){
 
-        Comment newComment = mapper.patchCommentDtoToCommentEntity(postCommentDto);
+        Comment newComment = mapper.postCommentDtoToCommentEntity(postCommentDto);
         newComment.setCommentingUser(userService.findUser(postCommentDto.getUserId()));
         newComment.setCommentedPost(postService.findPost(postCommentDto.getPostId()));
         Comment comment = commentService.createComment(newComment);
+
+
+
+
         return new ResponseEntity<Comment>(comment, HttpStatusCode.valueOf(200));
     }
 
@@ -58,7 +62,7 @@ public class CommentController {
     @PatchMapping
     public ResponseEntity<Comment> patchComment(@RequestBody PatchCommentDto patchCommentDto) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
 
-        Comment editComment = mapper.patchCommentDtoToCommentEntity(patchCommentDto);
+        Comment editComment = mapper.postCommentDtoToCommentEntity(patchCommentDto);
         editComment.setCommentingUser(userService.findUser(patchCommentDto.getUserId()));
         editComment.setCommentedPost(postService.findPost(patchCommentDto.getPostId()));
 

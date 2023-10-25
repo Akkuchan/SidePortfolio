@@ -11,6 +11,5 @@ public class PostCommentDto {
 
     Long userId;
     Long postId;
-    String title; //제목
     String body; //댓글 내용
 }

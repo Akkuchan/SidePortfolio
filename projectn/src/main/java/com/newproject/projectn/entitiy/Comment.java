@@ -1,5 +1,6 @@
 package com.newproject.projectn.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.newproject.projectn.entitiy.basetime.BaseTimeEntity;
 import com.newproject.projectn.entitiy.post.Post;
 import jakarta.persistence.*;
@@ -17,11 +18,13 @@ public class Comment extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "commenting_user_id")
     User commentingUser;
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(cascade=CascadeType.ALL )
     @JoinColumn(name = "commented_post_id")
     Post commentedPost;
 
-    String title; //제목
+    int recommend = 0;
+
     String body; //댓글 내용
 
     public Post getCommentedPost() {
@@ -40,6 +43,8 @@ public class Comment extends BaseTimeEntity {
     public void setCommentingUser(User commentingUser) {
         this.commentingUser = commentingUser;
     }
+
+    public void setRecommendPlus(){++recommend;}
 
 
 }

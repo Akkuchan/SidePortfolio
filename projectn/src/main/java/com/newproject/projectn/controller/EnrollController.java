@@ -6,17 +6,13 @@ import java.util.stream.Collectors;
 
 import com.newproject.projectn.Service.EnrollService;
 import com.newproject.projectn.Service.KindergartenService;
+import com.newproject.projectn.config.UriMaker;
 import com.newproject.projectn.dto.Multi_ResponseDTO;
 import com.newproject.projectn.dto.enroll.EnrollDtos;
-import com.newproject.projectn.dto.kindergarten.PatchKindergartenDto;
-import com.newproject.projectn.dto.kindergarten.PostKindergartenDto;
 import com.newproject.projectn.entitiy.Enroll;
-import com.newproject.projectn.entitiy.Kindergarten;
 import com.newproject.projectn.mapper.EnrollMapper;
-import com.newproject.projectn.mapper.KindergartenMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +25,7 @@ public class EnrollController {
     EnrollService enrollService;
     KindergartenService kindergartenService;
     EnrollMapper enrollMapper;
-
+    UriMaker uriMaker;
 
     @PostMapping("/create/v1")
     public ResponseEntity<Enroll> postKindergarten(@RequestBody EnrollDtos.PostEnrollDto postEnrollDto){
@@ -42,10 +38,11 @@ public class EnrollController {
 
    @GetMapping("/main")
     public ResponseEntity getEnrollListForMain(){//마감까지 얼마 남지 않은 최신 리스트 3가지 호출, 유치원 명 + 마감일 + 마감시간
-        List<Enroll> enrollList = enrollService.findEnding3Enrollments();
-       List<EnrollDtos.ResultForMain> resultDtos= enrollList.stream().map(EnrollMapper::enrollEntityToResultDtos).collect(Collectors.toList());
+        Page<Enroll> enrollList = enrollService.getThreePendingEnrolls();
 
-        return new ResponseEntity<>(resultDtos, HttpStatus.OK);
+       List<EnrollDtos.ResultForMain> resultDtos= enrollList.getContent().stream().map(EnrollMapper::enrollEntityToResultDtos).collect(Collectors.toList());
+
+        return new ResponseEntity<>(new Multi_ResponseDTO<>(resultDtos,enrollList ), HttpStatus.OK);
    }
 
     @GetMapping("/list/v1")
@@ -54,6 +51,15 @@ public class EnrollController {
         List<EnrollDtos.ResultForList> resultDtos= enrollList.getContent().stream().map(EnrollMapper::enrollEntityToResultListDtos).collect(Collectors.toList());
 
         return new ResponseEntity<>(new Multi_ResponseDTO<>(resultDtos, enrollList), HttpStatus.OK);
+    }
+
+    @GetMapping("/{enrollId}/v1")
+    public ResponseEntity<EnrollDtos.ResultDto> getEnrollList(@PathVariable long enrollId){
+        Enroll foundEnroll = enrollService.findEnroll(enrollId);
+        EnrollDtos.ResultDto dto = EnrollMapper.EnrollEntityToResponseDto(foundEnroll);
+
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PatchMapping("/edit/starttime")

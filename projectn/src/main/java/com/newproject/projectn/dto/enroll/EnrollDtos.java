@@ -1,11 +1,9 @@
 package com.newproject.projectn.dto.enroll;
 
+import com.newproject.projectn.dto.kindergarten.ResponseKindergartenDto;
 import com.newproject.projectn.entitiy.Kindergarten;
 import jakarta.persistence.OneToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,9 +47,10 @@ public class EnrollDtos {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @Setter
     public static class ResultForMain{
+        long enrollId;
         String title;
-        String link;
         String dueTime;
 
     }
@@ -67,4 +66,17 @@ public class EnrollDtos {
         boolean closed;
 
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class ResultDto   {
+        long enrollId;
+        ResponseKindergartenDto responseKindergartenDto;
+        LocalDateTime enrollStartTime;
+        LocalDateTime enrollEndTime;
+
+    }
+
 }

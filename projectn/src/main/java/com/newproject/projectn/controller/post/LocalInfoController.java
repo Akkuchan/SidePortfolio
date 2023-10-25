@@ -3,7 +3,6 @@ package com.newproject.projectn.controller.post;
 import com.newproject.projectn.Service.post.LocalInfoService;
 import com.newproject.projectn.config.UriMaker;
 import com.newproject.projectn.dto.post.LocalInfoDtos;
-import com.newproject.projectn.dto.post.PostDtos;
 import com.newproject.projectn.entitiy.post.LocalInfo;
 import com.newproject.projectn.mapper.PostMapper;
 import lombok.AllArgsConstructor;

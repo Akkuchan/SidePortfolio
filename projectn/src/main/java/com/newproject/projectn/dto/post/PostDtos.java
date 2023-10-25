@@ -1,5 +1,6 @@
 package com.newproject.projectn.dto.post;
 
+import com.newproject.projectn.dto.comment.CommentResponseDto;
 import com.newproject.projectn.entitiy.Comment;
 import lombok.*;
 
@@ -80,6 +81,7 @@ public class PostDtos {
         int view;
         List<String> imgList;// 첨부 이미지
         List<String> tags;//태그 목록
-        List<Comment> commentList ;
+        LocalDateTime regTime;
+        List<CommentResponseDto> commentResponseDtoList;
     }
 }

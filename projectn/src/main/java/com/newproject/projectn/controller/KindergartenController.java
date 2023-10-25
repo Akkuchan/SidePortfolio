@@ -3,7 +3,6 @@ package com.newproject.projectn.controller;
 import com.newproject.projectn.Service.KindergartenService;
 import com.newproject.projectn.config.UriMaker;
 import com.newproject.projectn.dto.Multi_ResponseDTO;
-import com.newproject.projectn.dto.PageInfoDto;
 import com.newproject.projectn.dto.kindergarten.PatchKindergartenDto;
 import com.newproject.projectn.dto.kindergarten.PostKindergartenDto;
 import com.newproject.projectn.dto.kindergarten.ResponseKindergartenDto;

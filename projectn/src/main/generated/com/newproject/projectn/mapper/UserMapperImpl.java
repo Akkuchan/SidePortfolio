@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-20T18:48:09+0900",
+    date = "2023-10-24T18:35:59+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -19,20 +19,20 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        User.UserBuilder user = User.builder();
+        User user = new User();
 
-        user.username( postUserDto.getUsername() );
-        user.email( postUserDto.getEmail() );
-        user.nickName( postUserDto.getNickName() );
-        user.password( postUserDto.getPassword() );
-        user.phoneNumber( postUserDto.getPhoneNumber() );
-        user.userType( postUserDto.getUserType() );
-        user.emailAvailable( postUserDto.getEmailAvailable() );
-        user.smsAvailable( postUserDto.getSmsAvailable() );
-        user.isMarried( postUserDto.getIsMarried() );
-        user.isPregnant( postUserDto.getIsPregnant() );
-        user.hasChild( postUserDto.getHasChild() );
+        user.setUsername( postUserDto.getUsername() );
+        user.setEmail( postUserDto.getEmail() );
+        user.setNickName( postUserDto.getNickName() );
+        user.setPassword( postUserDto.getPassword() );
+        user.setPhoneNumber( postUserDto.getPhoneNumber() );
+        user.setUserType( postUserDto.getUserType() );
+        user.setEmailAvailable( postUserDto.getEmailAvailable() );
+        user.setSmsAvailable( postUserDto.getSmsAvailable() );
+        user.setIsMarried( postUserDto.getIsMarried() );
+        user.setIsPregnant( postUserDto.getIsPregnant() );
+        user.setHasChild( postUserDto.getHasChild() );
 
-        return user.build();
+        return user;
     }
 }

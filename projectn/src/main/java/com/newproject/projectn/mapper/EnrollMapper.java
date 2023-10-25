@@ -9,9 +9,7 @@ import org.mapstruct.Mapper;
 
 import java.time.LocalDateTime;
 
-@Mapper(componentModel = "spring")// 매
-
-// 핑 인터페이스가 스프링의 매퍼라고 인식시킴
+@Mapper(componentModel = "spring")
 public interface EnrollMapper {
 
     static EnrollDtos.ResultForMain  enrollEntityToResultDtos(Enroll enroll){
@@ -21,11 +19,35 @@ public interface EnrollMapper {
             }
 
         EnrollDtos.ResultForMain.ResultForMainBuilder resultDtoBuilder = EnrollDtos.ResultForMain.builder();
-        resultDtoBuilder.title(enroll.getKindergarten().getName() + "곧 마감 예정!!").link("testtest").dueTime(enroll.getEnrollEndTime().toString());
+        resultDtoBuilder.enrollId(enroll.getEnrollId()).title(enroll.getKindergarten().getName() + "   ---  곧 마감 예정!!").dueTime(enroll.getEnrollEndTime().toString());
+
+
             return resultDtoBuilder.build();
         }
 
     Enroll postEnrollDtoToEnrollEntity(EnrollDtos.PostEnrollDto postEnrollDto);
+
+    static EnrollDtos.ResultDto EnrollEntityToResponseDto(Enroll enrollEntity){
+        if ( enrollEntity == null ) {
+            return null;
+        }
+
+        EnrollDtos.ResultDto.ResultDtoBuilder resultDto = EnrollDtos.ResultDto.builder();
+
+        if ( enrollEntity.getEnrollId() != null ) {
+            resultDto.enrollId( enrollEntity.getEnrollId() );
+        }
+        resultDto.responseKindergartenDto(KindergartenMapper.KindergartenEntityToResponseKindergartenDto(enrollEntity.getKindergarten()));
+        resultDto.enrollId(enrollEntity.getEnrollId());
+        resultDto.enrollStartTime( enrollEntity.getEnrollStartTime() );
+        resultDto.enrollEndTime( enrollEntity.getEnrollEndTime() );
+
+        return resultDto.build();
+
+    }
+
+
+
 
     static EnrollDtos.ResultForList  enrollEntityToResultListDtos(Enroll enroll){
 
